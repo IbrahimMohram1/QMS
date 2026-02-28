@@ -63,6 +63,38 @@ export default function useAuth() {
       setLoading(false);
     }
   };
+  // ==================Change Password==================
+  const changePassword = async (data) => {
+    setLoading(true);  
+    try {
+      let response = await axiosClient.post(`/api/auth/change-password`, data);
+      console.log(response);
+      toast.success(response.data.message);  
+       navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // ==================Reset Password==================
+    const resetPassword = async (data) => { 
+    setLoading(true);
+    try {
+      let response = await axiosClient.post(`/api/auth/reset-password`, data);  
 
-  return { login, forgotPassword, loading, register };
+      console.log(response);
+      toast.success(response.data.message);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { login, forgotPassword, loading, register, changePassword, resetPassword };
 }

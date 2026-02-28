@@ -14,6 +14,7 @@ import ForgotPassword from "./AuthModule/components/ForgotPassword/ForgotPasswor
 import ChangePassword from "./AuthModule/components/ChangePassword/ChangePassword";
 import ResetPassword from "./AuthModule/components/ResetPassword/ResetPassword";
 import AuthContextProvider from "./Context/AuthContext";
+import Dashboard from "./Dashboardmodule/Dashboard";
 
 function App() {
   let routes = createBrowserRouter([
@@ -36,6 +37,7 @@ function App() {
         { path: "forgot-password", element: <ForgotPassword /> },
         { path: "change-password", element: <ChangePassword /> },
         { path: "reset-password", element: <ResetPassword /> },
+        {path:'dashboard', element: <Dashboard/>}
       ],
     },
   ]);
