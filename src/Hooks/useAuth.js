@@ -11,7 +11,6 @@ export default function useAuth() {
   const navigate = useNavigate();
   let [loading, setLoading] = useState(false);
 
-
   //==================Register==================
   const register = async (data) => {
     setLoading(true);
@@ -28,7 +27,6 @@ export default function useAuth() {
     }
   };
 
-
   //==================Login==================
   const login = async (data) => {
     setLoading(true);
@@ -38,7 +36,7 @@ export default function useAuth() {
       const accessToken = response.data.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
       saveLoginData();
-      navigate("/");
+      navigate("/dashboard");
       toast.success(response.data.message);
     } catch (error) {
       console.log(error);
@@ -65,12 +63,12 @@ export default function useAuth() {
   };
   // ==================Change Password==================
   const changePassword = async (data) => {
-    setLoading(true);  
+    setLoading(true);
     try {
       let response = await axiosClient.post(`/api/auth/change-password`, data);
       console.log(response);
-      toast.success(response.data.message);  
-       navigate("/");
+      toast.success(response.data.message);
+      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
@@ -79,10 +77,10 @@ export default function useAuth() {
     }
   };
   // ==================Reset Password==================
-    const resetPassword = async (data) => { 
+  const resetPassword = async (data) => {
     setLoading(true);
     try {
-      let response = await axiosClient.post(`/api/auth/reset-password`, data);  
+      let response = await axiosClient.post(`/api/auth/reset-password`, data);
 
       console.log(response);
       toast.success(response.data.message);
@@ -96,5 +94,12 @@ export default function useAuth() {
     }
   };
 
-  return { login, forgotPassword, loading, register, changePassword, resetPassword };
+  return {
+    login,
+    forgotPassword,
+    loading,
+    register,
+    changePassword,
+    resetPassword,
+  };
 }
