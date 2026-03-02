@@ -5,15 +5,18 @@ import { toast } from "react-toastify";
 export default function useStudents() {
   let [students, setStudents] = useState([]);
   let [studentDetails, setStudentDetails] = useState(null);
+  let [loading, setLoading] = useState(false);
 
   const getAllStudents = async () => {
+    setLoading(true);
     try {
       let response = await axiosClient.get(`/api/student`);
-      console.log(response.data);
 
       setStudents(response.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -50,5 +53,6 @@ export default function useStudents() {
     deleteStudent,
     getStudentById,
     studentDetails,
+    loading,
   };
 }
