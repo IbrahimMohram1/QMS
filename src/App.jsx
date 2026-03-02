@@ -1,25 +1,24 @@
-import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
-import Login from "./AuthModule/components/Login/Login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import path from "node:path";
 import AuthLayout from "./Shared/AuthLayout/AuthLayout";
-import Register from "./AuthModule/components/Register/Register";
-import ForgotPassword from "./AuthModule/components/ForgotPassword/ForgotPassword";
-import ChangePassword from "./AuthModule/components/ChangePassword/ChangePassword";
-import ResetPassword from "./AuthModule/components/ResetPassword/ResetPassword";
 import AuthContextProvider from "./Context/AuthContext";
-import Dashboard from "./Dashboardmodule/Dashboard";
-import DashboardLayout from "./Shared/DashboardLayout/DashboardLayout";
-import Groups from "./Dashboardmodule/components/Groups/Groups";
-import Quizes from "./Dashboardmodule/components/Quizes/Quizes";
-import Results from "./Dashboardmodule/components/Results/Results";
 import ProtectedRoute from "./Shared/ProtectedRoutes/ProtectedRoutes";
+import Login from "./Modules/AuthModule/components/Login/Login";
+import Register from "./Modules/AuthModule/components/Register/Register";
+import ForgotPassword from "./Modules/AuthModule/components/ForgotPassword/ForgotPassword";
+import ChangePassword from "./Modules/AuthModule/components/ChangePassword/ChangePassword";
+import ResetPassword from "./Modules/AuthModule/components/ResetPassword/ResetPassword";
+import MasterLayout from "./Shared/MasterLayout/MasterLayout";
+import Dashboard from "./Modules/DashboardModule/Dashboard";
+import Quizes from "./Modules/QuizesModule/Components/Quizes";
+import Students from "./Modules/StudentsModule/Components/Students";
+import Groups from "./Modules/GroupsModule/Components/Groups";
+import Results from "./Modules/ResultsModule/Components/Results";
 
 function App() {
   let routes = createBrowserRouter([
@@ -49,7 +48,7 @@ function App() {
       path: "dashboard",
       element: (
         <ProtectedRoute>
-          <DashboardLayout />
+          <MasterLayout />
         </ProtectedRoute>
       ),
       children: [
@@ -68,6 +67,10 @@ function App() {
         {
           path: "results",
           element: <Results />,
+        },
+        {
+          path: "students",
+          element: <Students />,
         },
       ],
     },
