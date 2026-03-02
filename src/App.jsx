@@ -41,7 +41,6 @@ function App() {
         { path: "forgot-password", element: <ForgotPassword /> },
         { path: "change-password", element: <ChangePassword /> },
         { path: "reset-password", element: <ResetPassword /> },
-        { path: "dashboard", element: <Dashboard /> },
       ],
     },
     {

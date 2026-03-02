@@ -36,8 +36,8 @@ export default function useAuth() {
       const accessToken = response.data.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
       saveLoginData();
-      navigate("/dashboard");
       toast.success(response.data.message);
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);

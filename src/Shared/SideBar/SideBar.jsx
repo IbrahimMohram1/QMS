@@ -62,6 +62,8 @@ const NAV_LINKS = [
   { name: "Dashboard", path: "/dashboard", exact: true, icon: LayoutDashboard },
   { name: "Groups", path: "/dashboard/groups", icon: Users },
   { name: "Quizzes", path: "/dashboard/quizes", icon: AlarmClock },
+  { name: "Students", path: "/dashboard/students", icon: Users },
+
   { name: "Results", path: "/dashboard/results", icon: FileText },
 ];
 
