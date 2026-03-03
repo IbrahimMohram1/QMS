@@ -9,14 +9,14 @@ import DeleteConfirmation from "@/Shared/DeleteConfirmation/DeleteConfirmation";
 import Loading from "@/Shared/Loading/Loading";
 import axiosClient from "@/Api/AxiosClient";
 import useStudents from "@/Hooks/useStudent";
+import { toast } from "react-toastify";
 
 export default function Groups() {
-
   const [groups, setGroups] = useState([]);
-  const [students, setStudents] = useState([]);
+  // const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { getAllStudents } = useStudents();
+  const { getAllStudents, students } = useStudents();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -43,7 +43,6 @@ export default function Groups() {
       } else {
         setGroups([]);
       }
-
     } catch (error) {
       console.error("Error fetching groups:", error);
     } finally {
@@ -52,32 +51,22 @@ export default function Groups() {
   };
 
   // ================= Fetch Students =================
-  const fetchStudents = async () => {
-    try {
-      const response = await getAllStudents();
-
-      if (Array.isArray(response?.data)) {
-        setStudents(response.data);
-      } else if (Array.isArray(response?.data?.data)) {
-        setStudents(response.data.data);
-      } else {
-        setStudents([]);
-      }
-
-    } catch (error) {
-      console.error("Error fetching students:", error);
-      setStudents([]);
-    }
-  };
+  // const fetchStudents = async () => {
+  //   try {
+  //     const data = await getAllStudents();
+  //     setStudents(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     getAllGroups();
-    fetchStudents();
+    getAllStudents();
   }, []);
 
   // ================= Open Modal =================
   const openModal = (group = null) => {
-
     if (group) {
       setIsEditMode(true);
       setSelectedGroup(group);
@@ -99,30 +88,35 @@ export default function Groups() {
   // ================= Submit =================
   const handleSubmit = async () => {
     if (!formData.name) return;
+    console.log(formData);
 
     try {
       if (isEditMode) {
-        await axiosClient.patch(`/api/group/${selectedGroup._id}`, formData);
+        let response = await axiosClient.put(
+          `/api/group/${selectedGroup._id}`,
+          formData,
+        );
+        toast.success(response.data.message);
       } else {
-        await axiosClient.post("/api/group", formData);
+        let response = await axiosClient.post("/api/group", formData);
+        toast.success(response.data.message);
       }
-
       getAllGroups();
       setIsModalOpen(false);
       setOpenDropdown(false);
-
     } catch (error) {
-      console.error("Operation failed:", error);
+      toast.error(error.response?.data.message);
     }
   };
 
   // ================= Delete =================
   const deleteGroup = async (id) => {
     try {
-      await axiosClient.delete(`/api/group/${id}`);
+      let response = await axiosClient.delete(`/api/group/${id}`);
+      toast.success(response.data.message);
       setGroups((prev) => prev.filter((g) => g._id !== id));
     } catch (error) {
-      console.error("Delete failed:", error);
+      toast.error(error.response?.data.message);
     }
   };
 
@@ -145,7 +139,6 @@ export default function Groups() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto font-sans">
-
       <DeleteConfirmation
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
@@ -158,7 +151,6 @@ export default function Groups() {
       {/* ================= MODAL WITH SCROLL ================= */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-md p-0 border-none rounded-xl max-h-[85vh] flex flex-col">
-
           {/* Fixed Header */}
           <div className="flex justify-between items-center p-4 border-b bg-white shrink-0">
             <h2 className="font-bold text-gray-700">
@@ -184,7 +176,6 @@ export default function Groups() {
 
           {/* Scrollable Body */}
           <div className="p-6 space-y-6 bg-white overflow-y-auto flex-1">
-
             {/* Group Name */}
             <div>
               <label className="text-xs font-bold text-gray-400 uppercase">
@@ -207,7 +198,6 @@ export default function Groups() {
               </label>
 
               <div className="relative mt-1">
-
                 <div
                   onClick={() => setOpenDropdown(!openDropdown)}
                   className="flex items-center justify-between w-full p-3 bg-white border rounded-md h-12 cursor-pointer"
@@ -222,7 +212,6 @@ export default function Groups() {
 
                 {openDropdown && (
                   <div className="absolute z-20 mt-2 w-full bg-white border rounded-md shadow max-h-48 overflow-y-auto">
-
                     {students.length === 0 ? (
                       <div className="p-3 text-gray-400 text-sm">
                         No students found
@@ -244,12 +233,10 @@ export default function Groups() {
                         </div>
                       ))
                     )}
-
                   </div>
                 )}
               </div>
             </div>
-
           </div>
         </DialogContent>
       </Dialog>
@@ -275,7 +262,6 @@ export default function Groups() {
           <Loading height="h-64" />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
             {groups.map((group) => (
               <div
                 key={group._id}
@@ -312,7 +298,6 @@ export default function Groups() {
                 </div>
               </div>
             ))}
-
           </div>
         )}
       </Card>

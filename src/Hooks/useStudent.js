@@ -14,6 +14,7 @@ export default function useStudents() {
 
       setStudents(response.data);
       setLoading(false);
+      return response.data;
     } catch (error) {
       console.log(error);
       setLoading(false);
