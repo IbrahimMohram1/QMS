@@ -13,16 +13,13 @@ import { toast } from "react-toastify";
 
 export default function Groups() {
   const [groups, setGroups] = useState([]);
-  // const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const { getAllStudents, students } = useStudents();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
-
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -35,7 +32,6 @@ export default function Groups() {
     setLoading(true);
     try {
       const response = await axiosClient.get("/api/group");
-
       if (Array.isArray(response.data)) {
         setGroups(response.data);
       } else if (Array.isArray(response.data?.data)) {
@@ -49,16 +45,6 @@ export default function Groups() {
       setLoading(false);
     }
   };
-
-  // ================= Fetch Students =================
-  // const fetchStudents = async () => {
-  //   try {
-  //     const data = await getAllStudents();
-  //     setStudents(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   useEffect(() => {
     getAllGroups();
@@ -81,20 +67,21 @@ export default function Groups() {
         students: [],
       });
     }
-
     setIsModalOpen(true);
   };
 
   // ================= Submit =================
   const handleSubmit = async () => {
-    if (!formData.name) return;
-    console.log(formData);
+    if (!formData.name) {
+        toast.error("Please enter a group name");
+        return;
+    }
 
     try {
       if (isEditMode) {
         let response = await axiosClient.put(
           `/api/group/${selectedGroup._id}`,
-          formData,
+          formData
         );
         toast.success(response.data.message);
       } else {
@@ -105,7 +92,7 @@ export default function Groups() {
       setIsModalOpen(false);
       setOpenDropdown(false);
     } catch (error) {
-      toast.error(error.response?.data.message);
+      toast.error(error.response?.data.message || "Something went wrong");
     }
   };
 
@@ -123,7 +110,6 @@ export default function Groups() {
   // ================= Toggle Student =================
   const toggleStudent = (id) => {
     const exists = formData.students.includes(id);
-
     if (exists) {
       setFormData({
         ...formData,
@@ -148,113 +134,115 @@ export default function Groups() {
         }}
       />
 
-      {/* ================= MODAL WITH SCROLL ================= */}
+      {/* ================= MODAL (UI UPDATED) ================= */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-md p-0 border-none rounded-xl max-h-[85vh] flex flex-col">
-          {/* Fixed Header */}
-          <div className="flex justify-between items-center p-4 border-b bg-white shrink-0">
-            <h2 className="font-bold text-gray-700">
-              {isEditMode ? "Update Group" : "Set up a new Group"}
-            </h2>
-
-            <div className="flex border rounded-md overflow-hidden">
+        <DialogContent className="max-w-2xl p-0 border-none rounded-none shadow-2xl overflow-hidden flex flex-col outline-none">
+          
+          {/* Header Section */}
+          <div className="flex justify-between items-stretch border-b border-gray-300 bg-white">
+            <div className="flex-1 p-6 flex items-center">
+              <h2 className="text-2xl font-bold text-black tracking-tight">
+                {isEditMode ? "Update Group" : "Set up a new Group"}
+              </h2>
+            </div>
+            
+            <div className="flex border-l border-gray-300 h-full">
               <button
                 onClick={handleSubmit}
-                className="p-2 hover:bg-gray-100 border-r"
+                className="w-20 flex items-center justify-center hover:bg-gray-50 border-r border-gray-300 transition-colors py-6"
               >
-                <Check size={20} />
+                <Check size={36} strokeWidth={2.5} className="text-black" />
               </button>
 
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 hover:bg-gray-100"
+                className="w-20 flex items-center justify-center hover:bg-gray-50 transition-colors py-6"
               >
-                <X size={20} />
+                <X size={36} strokeWidth={2.5} className="text-black" />
               </button>
             </div>
           </div>
 
-          {/* Scrollable Body */}
-          <div className="p-6 space-y-6 bg-white overflow-y-auto flex-1">
-            {/* Group Name */}
-            <div>
-              <label className="text-xs font-bold text-gray-400 uppercase">
+          {/* Body Section */}
+          <div className="p-10 space-y-8 bg-white min-h-[300px]">
+            
+            {/* Group Name Input Group */}
+            <div className="flex items-center border border-gray-300 rounded-2xl overflow-hidden ring-offset-background focus-within:ring-2 focus-within:ring-black/5">
+              <div className="bg-[#FEF1E8] px-6 py-4 border-r border-gray-300 min-w-[160px] text-lg font-medium text-black">
                 Group Name
-              </label>
-
-              <Input
-                className="bg-gray-50 border-gray-200 h-12"
+              </div>
+              <input
+                type="text"
+                className="flex-1 px-5 py-4 outline-none text-lg bg-transparent"
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
             </div>
 
-            {/* Students Dropdown */}
-            <div>
-              <label className="text-xs font-bold text-gray-400 uppercase">
-                List Students
-              </label>
-
-              <div className="relative mt-1">
-                <div
-                  onClick={() => setOpenDropdown(!openDropdown)}
-                  className="flex items-center justify-between w-full p-3 bg-white border rounded-md h-12 cursor-pointer"
-                >
-                  <span className="text-gray-500 text-sm">
+            {/* Students Dropdown Group */}
+            <div className="relative">
+              <div 
+                onClick={() => setOpenDropdown(!openDropdown)}
+                className="flex items-center border border-gray-300 rounded-2xl overflow-hidden cursor-pointer hover:border-gray-400 transition-all"
+              >
+                <div className="bg-[#FEF1E8] px-6 py-4 border-r border-gray-300 min-w-[160px] text-lg font-medium text-black">
+                  List Students
+                </div>
+                <div className="flex-1 px-5 py-4 flex justify-between items-center text-lg">
+                  <span className={formData.students.length > 0 ? "text-black" : "text-gray-400"}>
                     {formData.students.length > 0
                       ? `${formData.students.length} Selected`
                       : "Select students..."}
                   </span>
-                  <ChevronDown size={18} />
+                  <ChevronDown size={32} strokeWidth={2} className="text-black ml-2" />
                 </div>
-
-                {openDropdown && (
-                  <div className="absolute z-20 mt-2 w-full bg-white border rounded-md shadow max-h-48 overflow-y-auto">
-                    {students.length === 0 ? (
-                      <div className="p-3 text-gray-400 text-sm">
-                        No students found
-                      </div>
-                    ) : (
-                      students.map((student) => (
-                        <div
-                          key={student._id}
-                          onClick={() => toggleStudent(student._id)}
-                          className="p-2 hover:bg-gray-100 cursor-pointer flex justify-between items-center"
-                        >
-                          <span>
-                            {student.first_name} {student.last_name}
-                          </span>
-
-                          {formData.students.includes(student._id) && (
-                            <Check size={16} className="text-green-600" />
-                          )}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                )}
               </div>
+
+              {/* Dropdown Menu */}
+              {openDropdown && (
+                <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto">
+                  {students.length === 0 ? (
+                    <div className="p-5 text-gray-400 text-center">No students available</div>
+                  ) : (
+                    students.map((student) => (
+                      <div
+                        key={student._id}
+                        onClick={() => toggleStudent(student._id)}
+                        className="p-4 hover:bg-orange-50 cursor-pointer flex justify-between items-center border-b border-gray-50 last:border-none transition-colors"
+                      >
+                        <span className="text-lg text-gray-700">
+                          {student.first_name} {student.last_name}
+                        </span>
+                        {formData.students.includes(student._id) && (
+                          <div className="bg-black rounded-full p-1">
+                            <Check size={14} className="text-white" />
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
+
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* ================= HEADER ================= */}
-      <div className="flex justify-end mb-4">
+      {/* ================= MAIN UI ================= */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold text-gray-800">Groups Management</h1>
         <Button
           onClick={() => openModal()}
-          className="rounded-full bg-white text-black border gap-2 shadow-sm px-4"
+          className="rounded-full bg-black text-white hover:bg-gray-800 gap-2 px-6 h-12 shadow-lg transition-transform active:scale-95"
         >
-          <Plus size={16} className="bg-black text-white rounded-full p-0.5" />
+          <Plus size={18} strokeWidth={3} />
           Add Group
         </Button>
       </div>
 
-      {/* ================= LIST ================= */}
-      <Card className="p-8 shadow-sm border-gray-100 rounded-2xl">
-        <h2 className="text-xl font-semibold text-gray-800 mb-8">
+      <Card className="p-8 shadow-sm border-gray-100 rounded-3xl">
+        <h2 className="text-xl font-bold text-gray-800 mb-8 border-b pb-4">
           Groups list
         </h2>
 
@@ -262,42 +250,48 @@ export default function Groups() {
           <Loading height="h-64" />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {groups.map((group) => (
-              <div
-                key={group._id}
-                className="flex items-center justify-between p-5 border rounded-xl hover:shadow-md transition"
-              >
-                <div>
-                  <h3 className="font-bold text-gray-800">
-                    Group : {group.name}
-                  </h3>
-                  <p className="text-xs text-gray-400 mt-1">
-                    No. of students : {group.students?.length || 0}
-                  </p>
-                </div>
+            {groups.length === 0 ? (
+                <div className="col-span-full py-20 text-center text-gray-400">No groups found. Create your first one!</div>
+            ) : (
+                groups.map((group) => (
+                <div
+                    key={group._id}
+                    className="flex items-center justify-between p-6 border border-gray-100 rounded-2xl hover:border-orange-200 hover:shadow-md transition-all bg-white"
+                >
+                    <div>
+                    <h3 className="font-bold text-xl text-gray-800">
+                        Group : {group.name}
+                    </h3>
+                    <p className="text-sm font-medium text-orange-600 mt-1">
+                        Students count: {group.students?.length || 0}
+                    </p>
+                    </div>
 
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => openModal(group)}
-                  >
-                    <FileEdit size={18} />
-                  </Button>
+                    <div className="flex gap-1">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full hover:bg-blue-50 hover:text-blue-600"
+                        onClick={() => openModal(group)}
+                    >
+                        <FileEdit size={20} />
+                    </Button>
 
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setSelectedGroup(group);
-                      setConfirmOpen(true);
-                    }}
-                  >
-                    <Trash2 size={18} />
-                  </Button>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full hover:bg-red-50 hover:text-red-600"
+                        onClick={() => {
+                        setSelectedGroup(group);
+                        setConfirmOpen(true);
+                        }}
+                    >
+                        <Trash2 size={20} />
+                    </Button>
+                    </div>
                 </div>
-              </div>
-            ))}
+                ))
+            )}
           </div>
         )}
       </Card>
