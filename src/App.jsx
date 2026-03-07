@@ -39,7 +39,6 @@ function App() {
           element: <Register />,
         },
         { path: "forgot-password", element: <ForgotPassword /> },
-        { path: "change-password", element: <ChangePassword /> },
         { path: "reset-password", element: <ResetPassword /> },
       ],
     },
@@ -71,6 +70,7 @@ function App() {
           path: "students",
           element: <Students />,
         },
+        { path: "change-password", element: <ChangePassword /> },
       ],
     },
   ]);

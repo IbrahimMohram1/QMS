@@ -1,10 +1,29 @@
-import React, { useContext } from "react";
-import { ChevronDown, AlarmClockPlus, Mail, Bell } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import {
+  ChevronDown,
+  AlarmClockPlus,
+  Mail,
+  Bell,
+  Eye,
+  Trash2,
+  LogOut,
+} from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
+import useAuth from "@/Hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 export default function NavBar() {
   const { loginData } = useContext(AuthContext);
   const location = useLocation();
+  let { logout } = useAuth();
 
   // Helper to get title from current path
   const getPageTitle = () => {
@@ -13,8 +32,13 @@ export default function NavBar() {
     if (path.includes("/groups")) return "Groups";
     if (path.includes("/quizes")) return "Quizes";
     if (path.includes("/results")) return "Results";
+    if (path.includes("/students")) return "Students";
+
     return "Dashboard";
   };
+  useEffect(() => {
+    console.log("Login Data in NavBar:", loginData);
+  }, [loginData]);
 
   return (
     <header className="flex h-20 items-center justify-between bg-white px-8 border-b border-black/10">
@@ -59,23 +83,55 @@ export default function NavBar() {
         </div>
 
         {/* User Profile */}
-        <div
-          className="px-6 flex items-center gap-4 cursor-pointer group h-full border-l border-black/10 hover:bg-gray-50 transition-colors"
-          id="user-profile-menu"
-        >
-          <div className="flex flex-col items-start">
-            <span className="text-sm font-bold text-black leading-tight">
-              {loginData?.first_name ||
-                (loginData?.first_name && loginData?.last_name
-                  ? `${loginData.first_name} ${loginData.last_name}`
-                  : "UserName")}
-            </span>
-            <span className="text-[11px] font-bold text-[#CDD400] leading-tight">
-              {loginData?.role || "Tutor"}
-            </span>
-          </div>
-          <ChevronDown className="h-5 w-5 text-black/30 transition-transform group-hover:translate-y-0.5" />
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div
+              className="px-6 flex items-center gap-4 cursor-pointer group h-full border-l border-black/10 hover:bg-gray-50 transition-colors"
+              id="user-profile-menu"
+            >
+              <div className="flex flex-col items-start">
+                <span className="text-sm font-bold text-black leading-tight">
+                  {loginData ? loginData.first_name : "UserName"}
+                </span>
+                <span className="text-[11px] font-bold text-[#CDD400] leading-tight">
+                  {loginData?.role}
+                </span>
+              </div>
+
+              <ChevronDown className="h-5 w-5 text-black/30 transition-transform group-hover:translate-y-0.5" />
+            </div>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent className="w-48 bg-white shadow-lg border border-gray-100 rounded-xl p-1">
+            <DropdownMenuLabel className="text-xs text-gray-400 font-medium px-2">
+              Actions
+            </DropdownMenuLabel>
+
+            <DropdownMenuSeparator className="bg-gray-100" />
+
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700">
+                <NavLink
+                  to="/dashboard/change-password"
+                  className="flex items-center gap-2 w-full"
+                >
+                  <AlarmClockPlus className="w-4 h-4 text-gray-500" />
+                  Change Password
+                </NavLink>
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator className="bg-gray-100" />
+
+              <DropdownMenuItem
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium text-red-500"
+                onClick={logout}
+              >
+                <LogOut className="w-4 h-4 text-red-500" />
+                LogOut
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "@/Api/AxiosClient";
 
 export default function useAuth() {
-  const { saveLoginData } = useContext(AuthContext);
+  const { saveLoginData, setLoginData } = useContext(AuthContext);
+
   const navigate = useNavigate();
   let [loading, setLoading] = useState(false);
+  let [AuthLoginData, setAuthLoginData] = useState();
 
   //==================Register==================
   const register = async (data) => {
@@ -35,7 +37,13 @@ export default function useAuth() {
       console.log(response);
       const accessToken = response.data.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
-      saveLoginData();
+
+      // setAuthLoginData(response.data.data.profile);
+      localStorage.setItem(
+        "userProfile",
+        JSON.stringify(response.data.data.profile),
+      );
+      setLoginData(response.data.data.profile);
       toast.success(response.data.message);
       navigate("/dashboard");
     } catch (error) {
@@ -93,6 +101,18 @@ export default function useAuth() {
       setLoading(false);
     }
   };
+  const logout = async () => {
+    try {
+      let response = await axiosClient.get(`/api/auth/logout`);
+      toast.success(response.data.message);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userProfile");
+      setLoginData(null);
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   return {
     login,
@@ -101,5 +121,7 @@ export default function useAuth() {
     register,
     changePassword,
     resetPassword,
+    logout,
+    AuthLoginData,
   };
 }

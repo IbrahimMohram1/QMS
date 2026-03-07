@@ -11,7 +11,6 @@ export default function useStudents() {
     setLoading(true);
     try {
       let response = await axiosClient.get(`/api/student`);
-
       setStudents(response.data);
       setLoading(false);
     } catch (error) {
