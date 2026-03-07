@@ -5,11 +5,11 @@ import { Card } from "@/components/ui/card";
 import { Trash2, FileEdit, Plus, Check, X, ChevronDown } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
-import DeleteConfirmation from "@/Shared/DeleteConfirmation/DeleteConfirmation";
 import Loading from "@/Shared/Loading/Loading";
 import axiosClient from "@/Api/AxiosClient";
 import useStudents from "@/Hooks/useStudent";
 import { toast } from "react-toastify";
+import DeleteConfirmation from "@/Shared/DeleteConfirmation/DeleteConfirmation";
 
 export default function Groups() {
   const [groups, setGroups] = useState([]);
@@ -232,13 +232,16 @@ export default function Groups() {
       {/* ================= MAIN UI ================= */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Groups Management</h1>
-        <Button
-          onClick={() => openModal()}
-          className="rounded-full bg-black text-white hover:bg-gray-800 gap-2 px-6 h-12 shadow-lg transition-transform active:scale-95"
-        >
-          <Plus size={18} strokeWidth={3} />
-          Add Group
-        </Button>
+       <Button
+  onClick={() => openModal()}
+  className="rounded-full bg-white text-black border border-gray-300 hover:bg-gray-50 gap-2 px-4 h-10 shadow-sm transition-all active:scale-95"
+>
+  {/* This icon perfectly matches the 'circle-plus' style in your image */}
+  <div className="bg-black rounded-full p-0.5 flex items-center justify-center">
+    <Plus size={14} strokeWidth={4} className="text-white" />
+  </div>
+  <span className="font-medium text-sm">Add Group</span>
+</Button>
       </div>
 
       <Card className="p-8 shadow-sm border-gray-100 rounded-3xl">
@@ -256,7 +259,7 @@ export default function Groups() {
                 groups.map((group) => (
                 <div
                     key={group._id}
-                    className="flex items-center justify-between p-6 border border-gray-100 rounded-2xl hover:border-orange-200 hover:shadow-md transition-all bg-white"
+                    className="flex items-center justify-between p-6 border border-gray-600 rounded-2xl hover:border-orange-200 hover:shadow-md transition-all bg-white"
                 >
                     <div>
                     <h3 className="font-bold text-xl text-gray-800">
