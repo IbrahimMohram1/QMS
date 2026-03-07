@@ -20,6 +20,7 @@ import Students from "./Modules/StudentsModule/Components/Students";
 import Groups from "./Modules/GroupsModule/Components/Groups";
 import Results from "./Modules/ResultsModule/Components/Results";
 import Questions from "./Modules/Questions/Components/Questions";
+import QuizDetails from "./Modules/QuizesModule/Components/QuizDetails";
 
 function App() {
   let routes = createBrowserRouter([
@@ -62,6 +63,10 @@ function App() {
         {
           path: "quizes",
           element: <Quizes />,
+        },
+        {
+          path: "quizes/:id",
+          element: <QuizDetails />,
         },
         {
           path: "results",

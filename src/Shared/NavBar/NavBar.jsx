@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 export default function NavBar() {
-  const { loginData } = useContext(AuthContext);
+  const { userProfile } = useContext(AuthContext);
   const location = useLocation();
   let { logout } = useAuth();
 
@@ -36,9 +36,6 @@ export default function NavBar() {
 
     return "Dashboard";
   };
-  useEffect(() => {
-    console.log("Login Data in NavBar:", loginData);
-  }, [loginData]);
 
   return (
     <header className="flex h-20 items-center justify-between bg-white px-8 border-b border-black/10">
@@ -91,10 +88,12 @@ export default function NavBar() {
             >
               <div className="flex flex-col items-start">
                 <span className="text-sm font-bold text-black leading-tight">
-                  {loginData ? loginData.first_name : "UserName"}
+                  {userProfile
+                    ? `${userProfile.first_name} ${userProfile.last_name || ""}`
+                    : "User Name"}
                 </span>
                 <span className="text-[11px] font-bold text-[#CDD400] leading-tight">
-                  {loginData?.role}
+                  {userProfile?.role}
                 </span>
               </div>
 

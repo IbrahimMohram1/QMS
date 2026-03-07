@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "@/Api/AxiosClient";
 
 export default function useAuth() {
-  const { saveLoginData, setLoginData } = useContext(AuthContext);
+  const { saveLoginData, setLoginData, setUserProfile } =
+    useContext(AuthContext);
 
   const navigate = useNavigate();
   let [loading, setLoading] = useState(false);
@@ -37,13 +38,11 @@ export default function useAuth() {
       console.log(response);
       const accessToken = response.data.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
-
-      // setAuthLoginData(response.data.data.profile);
       localStorage.setItem(
         "userProfile",
         JSON.stringify(response.data.data.profile),
       );
-      setLoginData(response.data.data.profile);
+      saveLoginData();
       toast.success(response.data.message);
       navigate("/dashboard");
     } catch (error) {
@@ -108,6 +107,7 @@ export default function useAuth() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("userProfile");
       setLoginData(null);
+      setUserProfile(null);
       navigate("/login");
     } catch (error) {
       toast.error(error.response.data.message);
