@@ -13,6 +13,7 @@ export default function useStudents() {
       let response = await axiosClient.get(`/api/student`);
       setStudents(response.data);
       setLoading(false);
+      return response.data;
     } catch (error) {
       console.log(error);
       setLoading(false);
