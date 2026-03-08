@@ -35,7 +35,6 @@ export default function useAuth() {
     setLoading(true);
     try {
       let response = await axiosClient.post(`/api/auth/login`, data);
-      console.log(response);
       const accessToken = response.data.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem(
@@ -47,7 +46,10 @@ export default function useAuth() {
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+
+      toast.error(error?.response?.data?.message || "Login failed");
+
+      throw error; // ⭐ دي المهمة
     } finally {
       setLoading(false);
     }

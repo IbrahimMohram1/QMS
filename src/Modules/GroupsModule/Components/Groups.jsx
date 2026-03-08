@@ -73,15 +73,15 @@ export default function Groups() {
   // ================= Submit =================
   const handleSubmit = async () => {
     if (!formData.name) {
-        toast.error("Please enter a group name");
-        return;
+      toast.error("Please enter a group name");
+      return;
     }
 
     try {
       if (isEditMode) {
         let response = await axiosClient.put(
           `/api/group/${selectedGroup._id}`,
-          formData
+          formData,
         );
         toast.success(response.data.message);
       } else {
@@ -137,7 +137,6 @@ export default function Groups() {
       {/* ================= MODAL (UI UPDATED) ================= */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-2xl p-0 border-none rounded-none shadow-2xl overflow-hidden flex flex-col outline-none">
-          
           {/* Header Section */}
           <div className="flex justify-between items-stretch border-b border-gray-300 bg-white">
             <div className="flex-1 p-6 flex items-center">
@@ -145,7 +144,7 @@ export default function Groups() {
                 {isEditMode ? "Update Group" : "Set up a new Group"}
               </h2>
             </div>
-            
+
             <div className="flex border-l border-gray-300 h-full">
               <button
                 onClick={handleSubmit}
@@ -164,8 +163,7 @@ export default function Groups() {
           </div>
 
           {/* Body Section */}
-          <div className="p-10 space-y-8 bg-white min-h-[300px]">
-            
+          <div className="p-10 space-y-8 bg-white min-h-[300px] overflow-auto">
             {/* Group Name Input Group */}
             <div className="flex items-center border border-gray-300 rounded-2xl overflow-hidden ring-offset-background focus-within:ring-2 focus-within:ring-black/5">
               <div className="bg-[#FEF1E8] px-6 py-4 border-r border-gray-300 min-w-[160px] text-lg font-medium text-black">
@@ -175,13 +173,15 @@ export default function Groups() {
                 type="text"
                 className="flex-1 px-5 py-4 outline-none text-lg bg-transparent"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
               />
             </div>
 
             {/* Students Dropdown Group */}
             <div className="relative">
-              <div 
+              <div
                 onClick={() => setOpenDropdown(!openDropdown)}
                 className="flex items-center border border-gray-300 rounded-2xl overflow-hidden cursor-pointer hover:border-gray-400 transition-all"
               >
@@ -189,12 +189,22 @@ export default function Groups() {
                   List Students
                 </div>
                 <div className="flex-1 px-5 py-4 flex justify-between items-center text-lg">
-                  <span className={formData.students.length > 0 ? "text-black" : "text-gray-400"}>
+                  <span
+                    className={
+                      formData.students.length > 0
+                        ? "text-black"
+                        : "text-gray-400"
+                    }
+                  >
                     {formData.students.length > 0
                       ? `${formData.students.length} Selected`
                       : "Select students..."}
                   </span>
-                  <ChevronDown size={32} strokeWidth={2} className="text-black ml-2" />
+                  <ChevronDown
+                    size={32}
+                    strokeWidth={2}
+                    className="text-black ml-2"
+                  />
                 </div>
               </div>
 
@@ -202,7 +212,9 @@ export default function Groups() {
               {openDropdown && (
                 <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto">
                   {students.length === 0 ? (
-                    <div className="p-5 text-gray-400 text-center">No students available</div>
+                    <div className="p-5 text-gray-400 text-center">
+                      No students available
+                    </div>
                   ) : (
                     students.map((student) => (
                       <div
@@ -224,7 +236,6 @@ export default function Groups() {
                 </div>
               )}
             </div>
-
           </div>
         </DialogContent>
       </Dialog>
@@ -251,46 +262,48 @@ export default function Groups() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {groups.length === 0 ? (
-                <div className="col-span-full py-20 text-center text-gray-400">No groups found. Create your first one!</div>
+              <div className="col-span-full py-20 text-center text-gray-400">
+                No groups found. Create your first one!
+              </div>
             ) : (
-                groups.map((group) => (
+              groups.map((group) => (
                 <div
-                    key={group._id}
-                    className="flex items-center justify-between p-6 border border-gray-100 rounded-2xl hover:border-orange-200 hover:shadow-md transition-all bg-white"
+                  key={group._id}
+                  className="flex items-center justify-between p-6 border border-gray-100 rounded-2xl hover:border-orange-200 hover:shadow-md transition-all bg-white"
                 >
-                    <div>
+                  <div>
                     <h3 className="font-bold text-xl text-gray-800">
-                        Group : {group.name}
+                      Group : {group.name}
                     </h3>
                     <p className="text-sm font-medium text-orange-600 mt-1">
-                        Students count: {group.students?.length || 0}
+                      Students count: {group.students?.length || 0}
                     </p>
-                    </div>
+                  </div>
 
-                    <div className="flex gap-1">
+                  <div className="flex gap-1">
                     <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full hover:bg-blue-50 hover:text-blue-600"
-                        onClick={() => openModal(group)}
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full hover:bg-blue-50 hover:text-blue-600"
+                      onClick={() => openModal(group)}
                     >
-                        <FileEdit size={20} />
+                      <FileEdit size={20} />
                     </Button>
 
                     <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full hover:bg-red-50 hover:text-red-600"
-                        onClick={() => {
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full hover:bg-red-50 hover:text-red-600"
+                      onClick={() => {
                         setSelectedGroup(group);
                         setConfirmOpen(true);
-                        }}
+                      }}
                     >
-                        <Trash2 size={20} />
+                      <Trash2 size={20} />
                     </Button>
-                    </div>
+                  </div>
                 </div>
-                ))
+              ))
             )}
           </div>
         )}

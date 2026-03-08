@@ -14,7 +14,7 @@ axiosClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosClient.interceptors.response.use(
@@ -22,13 +22,8 @@ axiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
-      localStorage.removeItem("accessToken");
-      window.location.href = "/login";
-    }
     return Promise.reject(error);
-  }
+  },
 );
-
 
 export default axiosClient;
