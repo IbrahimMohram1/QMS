@@ -32,9 +32,9 @@ export default function NavBar() {
     if (path.includes("/groups")) return "Groups";
     if (path.includes("/quizes")) return "Quizes";
     if (path.includes("/results")) return "Results";
-    if (path.includes("/students")) return "Students";
+    if (path.includes("/quiz-result-view")) return "Results";
 
-    return "Dashboard";
+    if (path.includes("/students")) return "Students";
   };
 
   return (

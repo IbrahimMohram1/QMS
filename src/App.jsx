@@ -21,6 +21,7 @@ import Groups from "./Modules/GroupsModule/Components/Groups";
 import Results from "./Modules/ResultsModule/Components/Results";
 import Questions from "./Modules/Questions/Components/Questions";
 import QuizDetails from "./Modules/QuizesModule/Components/QuizDetails";
+import ResultView from "./Modules/ResultsModule/Components/Result-view/ResultView";
 
 function App() {
   let routes = createBrowserRouter([
@@ -79,6 +80,14 @@ function App() {
         {
           path: "questions",
           element: <Questions />,
+        },
+        {
+          path: "change-password",
+          element: <ChangePassword />,
+        },
+        {
+          path: "quiz-result-view",
+          element: <ResultView />,
         },
       ],
     },

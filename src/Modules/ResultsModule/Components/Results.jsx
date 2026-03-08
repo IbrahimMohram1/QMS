@@ -9,10 +9,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useResults from "@/Hooks/useResults";
+import Loading from "@/Shared/Loading/Loading";
 import { Eye, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Results() {
+  const navigate = useNavigate();
   const { getAllResults, loading, results } = useResults();
   const [search, setSearch] = useState("");
 
@@ -69,48 +72,66 @@ export default function Results() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.length === 0 && (
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <Loading />
+                  </TableCell>
+                </TableRow>
+              ) : filtered.length === 0 ? (
                 <TableRow>
                   <TableCell
                     colSpan={7}
-                    className="text-center py-8 text-xl text-gray-400 font-mono  "
+                    className="text-center py-8 text-xl text-gray-400 font-mono"
                   >
                     No closed quizzes found.
                   </TableCell>
                 </TableRow>
+              ) : (
+                filtered.map((result) => (
+                  <TableRow
+                    className="text-center tracking-widest py-5 cursor-pointer hover:bg-gray-50"
+                    key={result.quiz._id}
+                    onClick={() =>
+                      navigate(`/dashboard/quiz-result-view`, {
+                        state: {
+                          quiz: result.quiz,
+                          participants: result.participants,
+                        },
+                      })
+                    }
+                  >
+                    <TableCell className="font-medium tracking-widest py-5">
+                      {result.quiz.title}
+                    </TableCell>
+                    <TableCell>{result.quiz.status}</TableCell>
+                    <TableCell>{result.quiz.code}</TableCell>
+                    <TableCell className="text-center tracking-widest py-5">
+                      {result.quiz.duration} MIN
+                    </TableCell>
+                    <TableCell className="text-center tracking-widest py-5">
+                      {new Date(result.quiz.schadule).toLocaleString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </TableCell>
+                    <TableCell className="text-center tracking-widest px-4 py-5">
+                      {result.quiz.difficulty}
+                    </TableCell>
+                    <TableCell className="mx-auto flex px-4 py-3 text-center justify-center items-center gap-x-2 text-md cursor-pointer">
+                      <Eye
+                        size={28}
+                        className="cursor-pointer text-green-500"
+                      />
+                      View
+                    </TableCell>
+                  </TableRow>
+                ))
               )}
-              {filtered.map((result) => (
-                <TableRow
-                  className="text-center tracking-widest py-5"
-                  key={result.quiz._id}
-                >
-                  <TableCell className="font-medium tracking-widest py-5">
-                    {result.quiz.title}
-                  </TableCell>
-                  <TableCell>{result.quiz.status}</TableCell>
-                  <TableCell>{result.quiz.code}</TableCell>
-                  <TableCell className="text-center tracking-widest py-5">
-                    {result.quiz.duration} MIN
-                  </TableCell>
-                  <TableCell className="text-center tracking-widest py-5">
-                    {new Date(result.quiz.schadule).toLocaleString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    })}
-                  </TableCell>
-                  <TableCell className="text-center tracking-widest px-4 py-5">
-                    {result.quiz.difficulty}
-                  </TableCell>
-                  <TableCell className="mx-auto flex px-4 py-3 text-center justify-center items-center gap-x-2 text-md cursor-pointer">
-                    <Eye size={28} className="cursor-pointer text-green-500 " />
-                    View
-                  </TableCell>
-                </TableRow>
-              ))}
             </TableBody>
           </Table>
         </div>
