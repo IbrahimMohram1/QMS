@@ -1,7 +1,10 @@
 import axiosClient from "@/Api/AxiosClient";
+import { useState } from "react";
+import { data } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function useQuizes() {
+  let [studentQuiz, setStudentQuiz] = useState([]);
   // ================== CREATE QUIZ===========================
   const createQuiz = async (data) => {
     try {
@@ -73,6 +76,29 @@ export default function useQuizes() {
     }
   };
 
+  const JoinStudentQuiz = async (data) => {
+    try {
+      const response = await axiosClient.post("/api/quiz/join", data);
+      toast.success(response.data.message);
+      return response; // خليها ترجع response عشان نقدر ناخد quizId
+    } catch (error) {
+      console.log("JoinStudentQuiz error:", error);
+      throw error; // عشان الـ joinSubmit يعرف يحصل خطأ
+    }
+  };
+
+  const getQuestionsWithoutAnswers = async (id) => {
+    try {
+      const response = await axiosClient.get(`/api/quiz/without-answers/${id}`);
+      setStudentQuiz(response.data.data.questions);
+      console.log(response);
+
+      return response; // مهم ترجعه عشان تستخدمه بعدين
+    } catch (error) {
+      console.log("getQuestionsWithoutAnswers error:", error);
+      throw error;
+    }
+  };
   return {
     createQuiz,
     getIncommingQuizes,
@@ -80,5 +106,8 @@ export default function useQuizes() {
     getQuizDetailsById,
     updateQuiz,
     deleteQuiz,
+    JoinStudentQuiz,
+    getQuestionsWithoutAnswers,
+    studentQuiz,
   };
 }

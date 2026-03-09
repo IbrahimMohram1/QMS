@@ -22,6 +22,7 @@ import Results from "./Modules/ResultsModule/Components/Results";
 import Questions from "./Modules/Questions/Components/Questions";
 import QuizDetails from "./Modules/QuizesModule/Components/QuizDetails";
 import ResultView from "./Modules/ResultsModule/Components/Result-view/ResultView";
+import StudentQuiz from "./Modules/QuizesModule/Components/StudentQuiz";
 
 function App() {
   let routes = createBrowserRouter([
@@ -89,6 +90,7 @@ function App() {
           path: "quiz-result-view",
           element: <ResultView />,
         },
+        { path: "student-quiz", element: <StudentQuiz /> },
       ],
     },
   ]);

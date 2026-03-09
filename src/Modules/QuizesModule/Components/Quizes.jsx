@@ -10,7 +10,7 @@ import {
   Copy,
   CheckCheck,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import useGroup from "@/Hooks/useGroup";
@@ -25,7 +25,13 @@ export default function Quizes() {
   const navigate = useNavigate();
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
   const { groups, getAllGroups } = useGroup();
-  const { createQuiz, getIncommingQuizes, getCompletedQuizes } = useQuizes();
+  const {
+    createQuiz,
+    getIncommingQuizes,
+    getCompletedQuizes,
+    JoinStudentQuiz,
+    getQuestionsWithoutAnswers,
+  } = useQuizes();
   const [incomingQuizes, setIncomingQuizes] = useState([]);
   const [completedQuizes, setCompletedQuizes] = useState([]);
   const [loadingQuizes, setLoadingQuizes] = useState(false);
@@ -122,7 +128,23 @@ export default function Quizes() {
       </div>
     );
   }
+  const { register: registerJoin, handleSubmit: handleJoinSubmit } = useForm();
+  const joinSubmit = async (data) => {
+    try {
+      const joinResponse = await JoinStudentQuiz({ code: data.code });
+      const quizId = joinResponse?.data?.data?.quiz;
 
+      if (!quizId) return console.error("No quizId returned");
+
+      let response = await getQuestionsWithoutAnswers(quizId);
+      console.log(response);
+      const questions = response?.data?.data?.questions;
+
+      navigate("/dashboard/student-quiz", { state: { questions, quizId } });
+    } catch (error) {
+      console.log("Join quiz error:", error.response?.data || error.message);
+    }
+  };
   return (
     <div className="py-6 px-6 font-sans min-h-screen">
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-10">
@@ -508,7 +530,7 @@ export default function Quizes() {
           setSuccessModal(open);
         }}
       >
-        <DialogContent className="max-w-sm! w-[90vw]! p-0 overflow-hidden border-none rounded-[20px] bg-white shadow-2xl [&>button]:hidden">
+        <DialogContent className=" w-full p-0 overflow-hidden border-none rounded-[20px] bg-white shadow-2xl [&>button]:hidden">
           <div className="flex flex-col items-center gap-6 px-10 py-12">
             {/* Checkmark icon */}
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#0D1321]">
@@ -544,15 +566,34 @@ export default function Quizes() {
                 </button>
               </div>
             ) : (
-              <Input
-                className="p-3"
-                type="text"
-                placeholder="Enter Your Code to join "
-              />
+              <form
+                className="min-w-full mx-auto flex flex-col "
+                onSubmit={handleJoinSubmit(joinSubmit)}
+              >
+                <div className="relative w-full">
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 text-sm font-bold text-black  py-4 px-5 bg-[#f8ebd9]">
+                    Code
+                  </span>
+
+                  <Input
+                    {...registerJoin("code", { required: true })}
+                    className=" pl-25 py-4 h-auto placeholder:text-black placeholder:text-base"
+                    type="text"
+                    placeholder="Enter Your Code to join"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-3/4 m-auto text-center  my-5 rounded-full bg-[#CDD400] hover:bg-[#b8bf00] text-black font-extrabold py-4 text-base transition-all active:scale-95 shadow-md"
+                >
+                  Send
+                </button>
+              </form>
             )}
 
             {/* Close button */}
-            {loginData?.role == "Instructor" ? (
+            {loginData?.role == "Instructor" && (
               <button
                 onClick={() => {
                   setSuccessModal(false);
@@ -560,10 +601,6 @@ export default function Quizes() {
                 className="w-full max-w-xs rounded-full bg-[#CDD400] hover:bg-[#b8bf00] text-black font-extrabold py-4 text-base transition-all active:scale-95 shadow-md"
               >
                 Close
-              </button>
-            ) : (
-              <button className="w-full max-w-xs rounded-full bg-[#CDD400] hover:bg-[#b8bf00] text-black font-extrabold py-4 text-base transition-all active:scale-95 shadow-md">
-                Send
               </button>
             )}
           </div>
