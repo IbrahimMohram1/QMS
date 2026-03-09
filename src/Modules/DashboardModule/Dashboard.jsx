@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import img from "../../assets/StudentImg.jpg";
 import img1 from "../../assets/StudentImg2.jpg";
 import img2 from "../../assets/StudentImg3.jpg";
@@ -44,6 +44,7 @@ import DeleteConfirmation from "@/Shared/DeleteConfirmation/DeleteConfirmation";
 import { Link } from "react-router-dom";
 import useQuizes from "@/Hooks/useQuizes";
 import Loading from "@/Shared/Loading/Loading";
+import { AuthContext } from "@/Context/AuthContext";
 export default function Dashboard() {
   const studentImages = [img, img1, img2, img3];
   const currentStudents = [

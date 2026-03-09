@@ -9,6 +9,8 @@ export default function useResults() {
     try {
       const response = await axiosClient.get("/api/quiz/result");
       const data = response.data;
+      console.log(response.data);
+
       setResults(data);
     } catch (error) {
       console.error("Error fetching results:", error);

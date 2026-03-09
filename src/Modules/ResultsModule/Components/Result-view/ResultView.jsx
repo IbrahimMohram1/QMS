@@ -18,7 +18,9 @@ export default function ResultView() {
   const { state } = useLocation();
   const { quiz, participants } = state;
   const filtered = participants.filter((student) =>
-    student.name.toLowerCase().includes(search.toLowerCase()),
+    `${student.participant.first_name} ${student.participant.last_name}`
+      .toLowerCase()
+      .includes(search.toLowerCase()),
   );
   const navigate = useNavigate();
   return (
@@ -79,21 +81,22 @@ export default function ResultView() {
                   </TableCell>
                 </TableRow>
               )}
-              {filtered.map((result) => (
+              {filtered.map((result, index) => (
                 <TableRow
                   className="text-center tracking-widest py-5"
                   key={result.quiz._id}
                 >
                   <TableCell className="font-medium tracking-widest py-5">
-                    {result.quiz.title}
+                    {index + 1}
                   </TableCell>
-                  <TableCell>{result.quiz.status}</TableCell>
-                  <TableCell>{result.quiz.code}</TableCell>
-                  <TableCell className="text-center tracking-widest py-5">
-                    {result.quiz.duration} MIN
+                  <TableCell className="font-medium tracking-widest py-5">
+                    {result.participant.first_name}{" "}
+                    {result.participant.last_name}
                   </TableCell>
+                  <TableCell>{result.score}</TableCell>
+
                   <TableCell className="text-center tracking-widest py-5">
-                    {new Date(result.quiz.schadule).toLocaleString("en-GB", {
+                    {new Date(result.finished_at).toLocaleString("en-GB", {
                       day: "2-digit",
                       month: "2-digit",
                       year: "numeric",
@@ -101,23 +104,6 @@ export default function ResultView() {
                       minute: "2-digit",
                       hour12: true,
                     })}
-                  </TableCell>
-                  <TableCell className="text-center tracking-widest px-4 py-5">
-                    {result.quiz.difficulty}
-                  </TableCell>
-                  <TableCell
-                    onClick={() =>
-                      navigate(`/dashboard/quiz-result-view`, {
-                        state: {
-                          quiz: result.quiz,
-                          participants: result.participants,
-                        },
-                      })
-                    }
-                    className="mx-auto flex px-4 py-3 text-center justify-center items-center gap-x-2 text-md cursor-pointer"
-                  >
-                    <Eye size={28} className="cursor-pointer text-green-500 " />
-                    View
                   </TableCell>
                 </TableRow>
               ))}

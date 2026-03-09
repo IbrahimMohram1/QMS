@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   AlarmClockPlus,
   Vault,
@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldLabel, FieldGroup } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import InComingImg from "@/assets/InComeingQuiz.png";
+import { AuthContext } from "@/Context/AuthContext";
 
 export default function Quizes() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function Quizes() {
   const [successModal, setSuccessModal] = useState(false);
   const [quizCode, setQuizCode] = useState("");
   const [copied, setCopied] = useState(false);
+  let { loginData } = useContext(AuthContext);
 
   const {
     register,
@@ -104,6 +106,22 @@ export default function Quizes() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+  function QuizCard({ title, onClick }) {
+    return (
+      <div
+        onClick={onClick}
+        className="bg-white rounded-[10px] border border-black/20 p-6 flex flex-col items-center justify-center gap-5 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 group shadow-sm w-full min-h-[200px] sm:min-h-[240px]"
+      >
+        <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-dashed border-black/10 group-hover:border-black/30 transition-all">
+          <AlarmClockPlus className="h-10 w-10 text-black group-hover:scale-110 transition-transform duration-300" />
+        </div>
+
+        <span className="text-base font-extrabold text-black text-center leading-snug tracking-tight">
+          {title}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="py-6 px-6 font-sans min-h-screen">
@@ -111,17 +129,18 @@ export default function Quizes() {
         {/* Left Section: Two cards responsive */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 content-start">
           {/* Set up a new quiz card */}
-          <div
-            onClick={() => setOpenQuizDialog(true)}
-            className="bg-white rounded-[10px] border border-black/20 p-6 flex flex-col items-center justify-center gap-5 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 group shadow-sm w-full min-h-[200px] sm:min-h-[240px]"
-          >
-            <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-dashed border-black/10 group-hover:border-black/30 transition-all">
-              <AlarmClockPlus className="h-10 w-10 text-black group-hover:scale-110 transition-transform duration-300" />
-            </div>
-            <span className="text-base font-extrabold text-black text-center leading-snug tracking-tight">
-              Set up a new quiz
-            </span>
-          </div>
+          <QuizCard
+            title={
+              loginData.role === "Instructor"
+                ? "Set up a new quiz"
+                : "Join Quiz"
+            }
+            onClick={
+              loginData.role === "Instructor"
+                ? () => setOpenQuizDialog(true)
+                : () => setSuccessModal(true)
+            }
+          />
 
           {/* Question Bank card */}
           <div
@@ -498,39 +517,55 @@ export default function Quizes() {
 
             {/* Title */}
             <p className="text-xl font-extrabold text-black text-center tracking-tight">
-              Quiz was successfully created
+              {loginData.role === "Instructor"
+                ? "  Quiz was successfully created"
+                : "Join Quiz"}
             </p>
 
             {/* Code display */}
-            <div className="flex items-center gap-0 rounded-full border-2 border-black/10 overflow-hidden w-full max-w-xs">
-              <span className="bg-[#F5F5F5] px-5 py-3 font-extrabold text-black text-sm tracking-widest border-r border-black/10 shrink-0">
-                CODE:
-              </span>
-              <span className="flex-1 px-5 py-3 font-extrabold text-black text-lg tracking-widest text-center">
-                {quizCode || "—"}
-              </span>
-              <button
-                onClick={handleCopyCode}
-                className="px-4 py-3 hover:bg-gray-100 transition-colors shrink-0 border-l border-black/10"
-                title="Copy code"
-              >
-                {copied ? (
-                  <CheckCheck size={18} className="text-green-600" />
-                ) : (
-                  <Copy size={18} className="text-black/50" />
-                )}
-              </button>
-            </div>
+            {loginData.role == "Instructor" ? (
+              <div className="flex items-center gap-0 rounded-full border-2 border-black/10 overflow-hidden w-full max-w-xs">
+                <span className="bg-[#F5F5F5] px-5 py-3 font-extrabold text-black text-sm tracking-widest border-r border-black/10 shrink-0">
+                  CODE:
+                </span>
+                <span className="flex-1 px-5 py-3 font-extrabold text-black text-lg tracking-widest text-center">
+                  {quizCode || "—"}
+                </span>
+                <button
+                  onClick={handleCopyCode}
+                  className="px-4 py-3 hover:bg-gray-100 transition-colors shrink-0 border-l border-black/10"
+                  title="Copy code"
+                >
+                  {copied ? (
+                    <CheckCheck size={18} className="text-green-600" />
+                  ) : (
+                    <Copy size={18} className="text-black/50" />
+                  )}
+                </button>
+              </div>
+            ) : (
+              <Input
+                className="p-3"
+                type="text"
+                placeholder="Enter Your Code to join "
+              />
+            )}
 
             {/* Close button */}
-            <button
-              onClick={() => {
-                setSuccessModal(false);
-              }}
-              className="w-full max-w-xs rounded-full bg-[#CDD400] hover:bg-[#b8bf00] text-black font-extrabold py-4 text-base transition-all active:scale-95 shadow-md"
-            >
-              Close
-            </button>
+            {loginData.role == "Instructor" ? (
+              <button
+                onClick={() => {
+                  setSuccessModal(false);
+                }}
+                className="w-full max-w-xs rounded-full bg-[#CDD400] hover:bg-[#b8bf00] text-black font-extrabold py-4 text-base transition-all active:scale-95 shadow-md"
+              >
+                Close
+              </button>
+            ) : (
+              <button className="w-full max-w-xs rounded-full bg-[#CDD400] hover:bg-[#b8bf00] text-black font-extrabold py-4 text-base transition-all active:scale-95 shadow-md">
+                Send
+              </button>
+            )}
           </div>
         </DialogContent>
       </Dialog>
