@@ -131,12 +131,12 @@ export default function Quizes() {
           {/* Set up a new quiz card */}
           <QuizCard
             title={
-              loginData.role === "Instructor"
+              loginData?.role === "Instructor"
                 ? "Set up a new quiz"
                 : "Join Quiz"
             }
             onClick={
-              loginData.role === "Instructor"
+              loginData?.role === "Instructor"
                 ? () => setOpenQuizDialog(true)
                 : () => setSuccessModal(true)
             }
@@ -517,13 +517,13 @@ export default function Quizes() {
 
             {/* Title */}
             <p className="text-xl font-extrabold text-black text-center tracking-tight">
-              {loginData.role === "Instructor"
+              {loginData?.role === "Instructor"
                 ? "  Quiz was successfully created"
                 : "Join Quiz"}
             </p>
 
             {/* Code display */}
-            {loginData.role == "Instructor" ? (
+            {loginData?.role == "Instructor" ? (
               <div className="flex items-center gap-0 rounded-full border-2 border-black/10 overflow-hidden w-full max-w-xs">
                 <span className="bg-[#F5F5F5] px-5 py-3 font-extrabold text-black text-sm tracking-widest border-r border-black/10 shrink-0">
                   CODE:
@@ -552,7 +552,7 @@ export default function Quizes() {
             )}
 
             {/* Close button */}
-            {loginData.role == "Instructor" ? (
+            {loginData?.role == "Instructor" ? (
               <button
                 onClick={() => {
                   setSuccessModal(false);
