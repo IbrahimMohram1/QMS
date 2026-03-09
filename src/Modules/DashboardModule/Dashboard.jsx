@@ -96,45 +96,46 @@ export default function Dashboard() {
             <>
               <div className="flex flex-col gap-y-2 my-3">
                 {allQuizzes.map((quiz, index) => (
-                  <Card
-                    key={quiz._id}
-                    id={`student-${quiz._id}`}
-                    className="w-full  rounded-lg px-5 py-2  border border-gray-400 bg-white hover:bg-gray-50 transition-colors duration-200"
-                  >
-                    <div className="flex items-center justify-between h-full   ">
-                      <div className="flex items-center gap-4 ">
-                        <div className="flex flex-col justify-center gap-y-2  ">
-                          <CardTitle className="mt-2">{quiz.title}</CardTitle>
-                          <CardDescription className="">
-                            <div className="flex  flex-col  text-sm text-gray-500 gap-y-1">
-                              <span className="flex gap-x-2  ">
-                                <CalendarDays size={16} />{" "}
-                                <span className="font-semibold">
-                                  {" "}
-                                  Scheduled :
-                                </span>{" "}
-                                {quiz.schadule}
-                              </span>
-                              <span className="flex gap-x-2  ">
-                                <Lock size={16} />{" "}
-                                <span className="font-semibold"> Code:</span>{" "}
-                                {quiz.code}
-                              </span>
-                            </div>
-                          </CardDescription>
+                  <Link key={quiz._id} to={`/dashboard/quizes/${quiz._id}`}>
+                    <Card
+                      id={`student-${quiz._id}`}
+                      className="w-full  rounded-lg px-5 py-2  border border-gray-400 bg-white hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <div className="flex items-center justify-between h-full   ">
+                        <div className="flex items-center gap-4 ">
+                          <div className="flex flex-col justify-center gap-y-2  ">
+                            <CardTitle className="mt-2">{quiz.title}</CardTitle>
+                            <CardDescription className="">
+                              <div className="flex  flex-col  text-sm text-gray-500 gap-y-1">
+                                <span className="flex gap-x-2  ">
+                                  <CalendarDays size={16} />{" "}
+                                  <span className="font-semibold">
+                                    {" "}
+                                    Scheduled :
+                                  </span>{" "}
+                                  {quiz.schadule}
+                                </span>
+                                <span className="flex gap-x-2  ">
+                                  <Lock size={16} />{" "}
+                                  <span className="font-semibold"> Code:</span>{" "}
+                                  {quiz.code}
+                                </span>
+                              </div>
+                            </CardDescription>
+                          </div>
                         </div>
+                        <span
+                          className={`px-3 py-1 text-base font-semibold rounded-full ${
+                            quiz.status === "open"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {quiz.status}
+                        </span>
                       </div>
-                      <span
-                        className={`px-3 py-1 text-base font-semibold rounded-full ${
-                          quiz.status === "open"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {quiz.status}
-                      </span>
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 ))}
                 <div className="mt-3">
                   <Link
