@@ -25,7 +25,7 @@ export default function ResultView() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="w-11/12 mx-auto">
+      <div className="mx-auto">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2  text-gray-600 text-base my-8">
           <span
@@ -41,11 +41,11 @@ export default function ResultView() {
           <div className="relative  w-full ">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-              size={22}
+              size={18}
             />
 
             <Input
-              className="w-full py-6 pl-10 rounded-full border border-gray-300 placeholder:text-gray-600 placeholder:text-lg"
+              className="w-full py-6 pl-10 rounded-full border border-gray-300 placeholder:text-gray-600 placeholder:text-base"
               placeholder="Search By Student Name"
               onChange={(e) => setSearch(e.target.value)}
             />

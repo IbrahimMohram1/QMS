@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -18,13 +19,34 @@ export default function Results() {
   const navigate = useNavigate();
   const { getAllResults, loading, results } = useResults();
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filtered = results.filter((result) =>
     result.quiz.title.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginatedResults = filtered.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
+
   useEffect(() => {
     getAllResults();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
   return (
     <>
       <div className=" dark:bg-gray-900">
@@ -81,7 +103,7 @@ export default function Results() {
                       <Loading />
                     </TableCell>
                   </TableRow>
-                ) : filtered.length === 0 ? (
+                ) : paginatedResults.length === 0 ? (
                   <TableRow>
                     <TableCell
                       colSpan={7}
@@ -91,7 +113,7 @@ export default function Results() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filtered.map((result) => (
+                  paginatedResults.map((result) => (
                     <TableRow
                       className="text-center  py-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                       key={result.quiz._id}
@@ -144,6 +166,28 @@ export default function Results() {
                 )}
               </TableBody>
             </Table>
+
+            <div className="flex  items-center gap-4 mt-4">
+              <Button
+                className="text-xs"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                Prev
+              </Button>
+
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                {currentPage} / {totalPages}
+              </span>
+
+              <Button
+                className="text-xs"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </Button>
+            </div>
           </div>
         </div>
       </div>
