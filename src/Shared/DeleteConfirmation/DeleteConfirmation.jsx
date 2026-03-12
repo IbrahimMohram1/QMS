@@ -31,7 +31,7 @@ export default function DeleteConfirmation({
 
   return (
     <AlertDialog
-      className="bg-white text-black"
+      className="bg-white dark:bg-gray-800 text-black dark:text-gray-100"
       open={open}
       onOpenChange={onOpenChange}
     >
@@ -41,7 +41,7 @@ export default function DeleteConfirmation({
         </AlertDialogTrigger>
       )}
 
-      <AlertDialogContent className="bg-white text-black">
+      <AlertDialogContent className="bg-white dark:bg-gray-800 text-black dark:text-gray-100">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>

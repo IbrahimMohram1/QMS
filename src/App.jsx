@@ -23,6 +23,7 @@ import Questions from "./Modules/Questions/Components/Questions";
 import QuizDetails from "./Modules/QuizesModule/Components/QuizDetails";
 import ResultView from "./Modules/ResultsModule/Components/Result-view/ResultView";
 import StudentQuiz from "./Modules/QuizesModule/Components/StudentQuiz";
+import { ThemeContextProvider } from "./Context/DarkModeContext";
 
 function App() {
   let routes = createBrowserRouter([
@@ -97,10 +98,12 @@ function App() {
 
   return (
     <>
-      <AuthContextProvider>
-        <ToastContainer />
-        <RouterProvider router={routes} />
-      </AuthContextProvider>
+      <ThemeContextProvider>
+        <AuthContextProvider>
+          <ToastContainer />
+          <RouterProvider router={routes} />
+        </AuthContextProvider>
+      </ThemeContextProvider>
     </>
   );
 }

@@ -86,8 +86,10 @@ export default function Dashboard() {
   return (
     <>
       <div className="w-11/12 mx-auto flex justify-center items-start mt-12 gap-x-5 ">
-        <div className="md:w-1/2 w-full border border-black/10 p-5 rounded-lg bg-gray-50 ">
-          <h2 className="font-semibold text-lg">Upcoming 5 quizzes</h2>
+        <div className="md:w-1/2 w-full border border-black/10 dark:border-gray-700 p-5 rounded-lg bg-gray-50 dark:bg-gray-900 ">
+          <h2 className="font-semibold text-lg text-black dark:text-gray-100">
+            Upcoming 5 quizzes
+          </h2>
 
           {loadingQuizes ? (
             <div>
@@ -100,14 +102,16 @@ export default function Dashboard() {
                   <Link key={quiz._id} to={`/dashboard/quizes/${quiz._id}`}>
                     <Card
                       id={`student-${quiz._id}`}
-                      className="w-full  rounded-lg px-5 py-2  border border-gray-400 bg-white hover:bg-gray-50 transition-colors duration-200"
+                      className="w-full  rounded-lg px-5 py-2  border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                       <div className="flex items-center justify-between h-full   ">
                         <div className="flex items-center gap-4 ">
                           <div className="flex flex-col justify-center gap-y-2  ">
-                            <CardTitle className="mt-2">{quiz.title}</CardTitle>
+                            <CardTitle className="mt-2 dark:text-white">
+                              {quiz.title}
+                            </CardTitle>
                             <CardDescription className="">
-                              <div className="flex  flex-col  text-sm text-gray-500 gap-y-1">
+                              <div className="flex  flex-col  text-sm text-gray-500 dark:text-gray-400 gap-y-1">
                                 <span className="flex gap-x-2  ">
                                   <CalendarDays size={16} />{" "}
                                   <span className="font-semibold">
@@ -152,10 +156,12 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="md:w-1/2 w-full border border-black/10 p-3 rounded-lg bg-gray-50 ">
+        <div className="md:w-1/2 w-full border border-black/10 dark:border-gray-700 p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ">
           <div className="flex justify-between items-center p-4">
-            <h2 className="font-semibold text-lg">Top 5 Students</h2>
-            <Link className="font-medium flex items-center">
+            <h2 className="font-semibold text-lg text-black dark:text-gray-100">
+              Top 5 Students
+            </h2>
+            <Link className="font-medium flex items-center text-black dark:text-gray-100">
               All Students
               <ArrowRight size={18} className="text-green-500" />
             </Link>
@@ -165,7 +171,7 @@ export default function Dashboard() {
               <Card
                 key={student._id}
                 id={`student-${student._id}`}
-                className="w-full  rounded-lg px-5 py-2 h-20 border border-gray-400 bg-white hover:bg-gray-50 transition-colors duration-200"
+                className="w-full  rounded-lg px-5 py-2 h-20 border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
               >
                 <div className="flex items-center justify-between h-full   ">
                   <div className="flex items-center gap-4 h-full">
@@ -176,11 +182,11 @@ export default function Dashboard() {
                     />
 
                     <div className="flex flex-col justify-center gap-y-2  ">
-                      <CardTitle className="mt-2">
+                      <CardTitle className="mt-2 dark:text-white">
                         {student.first_name} {student.last_name}
                       </CardTitle>
                       <CardDescription className="">
-                        <div className="flex items-center  text-sm text-gray-500">
+                        <div className="flex items-center  text-sm text-gray-500 dark:text-gray-400">
                           <span className="">
                             Class rank: grouup | Average score: 20%
                           </span>
@@ -189,7 +195,10 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div>
-                    <ArrowRight size={22} className="text-gray-400" />
+                    <ArrowRight
+                      size={22}
+                      className="text-gray-400 dark:text-gray-300"
+                    />
                   </div>
                 </div>
               </Card>

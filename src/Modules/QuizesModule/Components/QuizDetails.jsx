@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "@/Context/DarkModeContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { Calendar, Clock, Pencil, X, Trash2, Copy, Check } from "lucide-react";
 import useQuizes from "@/Hooks/useQuizes";
@@ -20,6 +21,7 @@ export default function QuizDetails() {
   const [saving, setSaving] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const { darkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -99,15 +101,17 @@ export default function QuizDetails() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CDD400]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CDD400] dark:border-[#CDD400]"></div>
       </div>
     );
   }
 
   if (!quiz) {
     return (
-      <div className="p-8 text-center bg-white rounded-2xl shadow-sm border border-gray-100">
-        <p className="text-gray-500 font-bold">Quiz not found</p>
+      <div className="p-8 text-center bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <p className="text-gray-500 dark:text-gray-400 font-bold">
+          Quiz not found
+        </p>
         <button
           onClick={() => navigate(-1)}
           className="mt-4 text-[#CDD400] hover:underline font-bold"
@@ -137,27 +141,34 @@ export default function QuizDetails() {
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm font-bold mb-6">
         <span
-          className="text-black/40 cursor-pointer hover:text-black transition-colors"
+          className="text-black/40 dark:text-gray-400 cursor-pointer hover:text-black dark:hover:text-gray-100 transition-colors"
           onClick={() => navigate("/dashboard/quizes")}
         >
           Quizzes
         </span>
-        <span className="font-black text-black/30"> &raquo; </span>
-        <span className="text-black font-bold">{quiz.title}</span>
+        <span className="font-black text-black/30 dark:text-gray-500">
+          {" "}
+          &raquo;{" "}
+        </span>
+        <span className="text-black dark:text-gray-100 font-bold">
+          {quiz.title}
+        </span>
       </div>
 
       {/* Card */}
-      <div className="bg-white border border-black/20 rounded-[10px] p-6 sm:p-8 max-w-xl shadow-sm w-full mx-auto md:mx-0">
-        <h1 className="text-2xl font-black text-black mb-3">{quiz.title}</h1>
+      <div className="bg-white dark:bg-gray-800 border border-black/20 dark:border-gray-700 rounded-[10px] p-6 sm:p-8 max-w-xl shadow-sm w-full mx-auto md:mx-0">
+        <h1 className="text-2xl font-black text-black dark:text-gray-100 mb-3">
+          {quiz.title}
+        </h1>
 
         {/* Date & Time */}
-        <div className="flex items-center gap-6 mb-7 text-sm font-bold text-black">
+        <div className="flex items-center gap-6 mb-7 text-sm font-bold text-black dark:text-gray-200">
           <div className="flex items-center gap-2">
-            <Calendar size={18} />
+            <Calendar size={18} className="text-black dark:text-gray-200" />
             <span>{dateStr}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Clock size={18} />
+            <Clock size={18} className="text-black dark:text-gray-200" />
             <span>{timeStr}</span>
           </div>
         </div>
@@ -165,11 +176,11 @@ export default function QuizDetails() {
         {/* Fields */}
         <div className="space-y-3">
           {/* Duration */}
-          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 rounded-[8px] overflow-hidden min-h-[44px]">
-            <span className="bg-[#FFEDDF] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black text-sm border-b sm:border-b-0 sm:border-r border-black/20 shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 dark:border-gray-700 rounded-[8px] overflow-hidden min-h-[44px]">
+            <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-black/20 dark:border-gray-700 shrink-0">
               Duration
             </span>
-            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black text-sm">
+            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
               {quiz.duration} minutes
             </span>
           </div>
@@ -180,7 +191,7 @@ export default function QuizDetails() {
               Quiz Code
             </span>
             <div className="flex-1 px-4 py-2 sm:py-0 flex items-center justify-between">
-              <span className="font-black text-black text-sm tracking-widest">
+              <span className="font-black text-black dark:text-gray-100 text-sm tracking-widest">
                 {quiz.code}
               </span>
               <button
@@ -188,7 +199,7 @@ export default function QuizDetails() {
                   navigator.clipboard.writeText(quiz.code);
                   toast.success("Quiz code copied!");
                 }}
-                className="flex items-center gap-1.5 text-[10px] font-black uppercase text-[#0D1321] hover:bg-[#0D1321] hover:text-white px-2 py-0.5 rounded border border-[#0D1321] transition-all"
+                className="flex items-center gap-1.5 text-[10px] font-black uppercase text-[#0D1321] dark:text-gray-200 hover:bg-[#0D1321] hover:text-white dark:hover:bg-gray-700 dark:hover:text-white px-2 py-0.5 rounded border border-[#0D1321] transition-all"
               >
                 <Copy size={11} />
                 Copy
@@ -197,41 +208,41 @@ export default function QuizDetails() {
           </div>
 
           {/* Number of questions */}
-          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 rounded-[8px] overflow-hidden min-h-[44px]">
-            <span className="bg-[#FFEDDF] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black text-sm border-b sm:border-b-0 sm:border-r border-black/20 shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 dark:border-gray-700 rounded=[8px] overflow-hidden min-h-[44px]">
+            <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-black/20 dark:border-gray-700 shrink-0">
               Number of questions
             </span>
-            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black text-sm">
+            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
               {quiz.questions_number}
             </span>
           </div>
 
           {/* Score per question */}
-          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 rounded-[8px] overflow-hidden min-h-[44px]">
-            <span className="bg-[#FFEDDF] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black text-sm border-b sm:border-b-0 sm:border-r border-black/20 shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 dark:border-gray-700 rounded=[8px] overflow-hidden min-h-[44px]">
+            <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-black/20 dark:border-gray-700 shrink-0">
               Score per question
             </span>
-            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black text-sm">
+            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
               {quiz.score_per_question}
             </span>
           </div>
 
           {/* Description */}
-          <div className="border border-black/20 rounded-[8px] overflow-hidden">
-            <div className="bg-[#FFEDDF] px-4 py-2.5 font-bold text-black text-sm border-b border-black/20">
+          <div className="border border-black/20 dark:border-gray-700 rounded-[8px] overflow-hidden">
+            <div className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2.5 font-bold text-black dark:text-gray-100 text-sm border-b border-black/20 dark:border-gray-700">
               Description
             </div>
-            <div className="px-4 py-3 font-bold text-black text-sm leading-relaxed min-h-[90px]">
+            <div className="px-4 py-3 font-bold text-black dark:text-gray-200 text-sm leading-relaxed min-h-[90px]">
               {quiz.description || "No description provided."}
             </div>
           </div>
 
           {/* Question bank used */}
           <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 rounded-[8px] overflow-hidden min-h-[44px]">
-            <span className="bg-[#FFEDDF] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black text-sm border-b sm:border-b-0 sm:border-r border-black/20 shrink-0">
+            <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-black/20 dark:border-gray-700 shrink-0">
               Question bank used
             </span>
-            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black text-sm uppercase">
+            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm uppercase">
               Bank {quiz.type || "one"}
             </span>
           </div>
@@ -245,7 +256,7 @@ export default function QuizDetails() {
               defaultChecked
               className="w-5 h-5 accent-[#0D1321] rounded cursor-pointer"
             />
-            <span className="font-bold text-sm text-black">
+            <span className="font-bold text-sm text-black dark:text-gray-200">
               Randomize questions
             </span>
           </label>
@@ -253,14 +264,14 @@ export default function QuizDetails() {
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="flex-1 sm:flex-none justify-center border border-red-200 text-red-500 px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-red-50 transition-colors active:scale-95 text-sm"
+              className="flex-1 sm:flex-none justify-center border border-red-200 text-red-500 px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-700 transition-colors active:scale-95 text-sm"
             >
               <Trash2 size={16} />
               Delete
             </button>
             <button
               onClick={handleEditOpen}
-              className="flex-1 sm:flex-none justify-center bg-[#0D1321] text-white px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-black transition-colors active:scale-95 text-sm"
+              className="flex-1 sm:flex-none justify-center bg-[#0D1321] text-white px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-black dark:bg-gray-900 dark:hover:bg-black transition-colors active:scale-95 text-sm"
             >
               <Pencil size={16} />
               Edit
@@ -278,9 +289,11 @@ export default function QuizDetails() {
             if (e.target === e.currentTarget) setShowDeleteModal(false);
           }}
         >
-          <div className="bg-white rounded-[20px] shadow-2xl w-full max-w-sm overflow-hidden">
-            <div className="flex items-center justify-between px-8 py-5 border-b border-black/10">
-              <h2 className="text-lg font-black text-black">Delete Quiz</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-[20px] shadow-2xl w-full max-w-sm overflow-hidden">
+            <div className="flex items-center justify-between px-8 py-5 border-b border-black/10 dark:border-gray-700">
+              <h2 className="text-lg font-black text-black dark:text-gray-100">
+                Delete Quiz
+              </h2>
               <button
                 onClick={() => setShowDeleteModal(false)}
                 className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
@@ -290,7 +303,7 @@ export default function QuizDetails() {
             </div>
 
             <div className="px-8 py-6">
-              <p className="text-black font-bold text-sm leading-relaxed">
+              <p className="text-black dark:text-gray-200 font-bold text-sm leading-relaxed">
                 Are you sure you want to delete{" "}
                 <span className="font-black">&ldquo;{quiz.title}&rdquo;</span>?
                 This action cannot be undone.
@@ -300,14 +313,14 @@ export default function QuizDetails() {
             <div className="px-8 py-5 border-t border-black/10 flex justify-end gap-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-6 py-2 rounded-lg border border-black/20 font-bold text-sm text-black hover:bg-gray-50 transition-colors"
+                className="px-6 py-2 rounded-lg border border-black/20 font-bold text-sm text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="px-6 py-2 rounded-lg bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-2 rounded-lg bg-red-500 text-white font-bold text-sm hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {deleting ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -330,13 +343,15 @@ export default function QuizDetails() {
             if (e.target === e.currentTarget) setShowEditModal(false);
           }}
         >
-          <div className="bg-white rounded-[20px] shadow-2xl w-full max-w-md overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-[20px] shadow-2xl w-full max-w-md overflow-hidden">
             {/* Modal Header */}
             <div className="flex items-center justify-between px-8 py-5 border-b border-black/10">
-              <h2 className="text-lg font-black text-black">Edit Quiz</h2>
+              <h2 className="text-lg font-black text-black dark:text-gray-100">
+                Edit Quiz
+              </h2>
               <button
                 onClick={() => setShowEditModal(false)}
-                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <X size={20} className="text-black/50" />
               </button>
@@ -344,8 +359,8 @@ export default function QuizDetails() {
 
             {/* Modal Body */}
             <div className="px-8 py-6 space-y-4">
-              <div className="flex items-center border border-[#0000004D] rounded-[10px] overflow-hidden h-12 bg-white">
-                <span className="bg-[#FFEDDF] px-5 h-full flex items-center font-bold text-black text-sm border-r border-[#0000004D] shrink-0 whitespace-nowrap min-w-[120px]">
+              <div className="flex items-center border border-[#0000004D] dark:border-[#777] rounded-[10px] overflow-hidden h-12 bg-white dark:bg-gray-700">
+                <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 h-full flex items-center font-bold text-black dark:text-gray-100 text-sm border-r border-[#0000004D] dark:border-[#777] shrink-0 whitespace-nowrap min-w-[120px]">
                   Quiz Title
                 </span>
                 <input
@@ -359,8 +374,8 @@ export default function QuizDetails() {
                 />
               </div>
 
-              <div className="flex items-center border border-[#0000004D] rounded-[10px] overflow-hidden h-12 bg-white">
-                <span className="bg-[#FFEDDF] px-5 h-full flex items-center font-bold text-black text-sm border-r border-[#0000004D] shrink-0 whitespace-nowrap min-w-[120px]">
+              <div className="flex items-center border border-[#0000004D] dark:border-[#777] rounded-[10px] overflow-hidden h-12 bg-white dark:bg-gray-700">
+                <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 h-full flex items-center font-bold text-black dark:text-gray-100 text-sm border-r border-[#0000004D] dark:border-[#777] shrink-0 whitespace-nowrap min-w-[120px]">
                   Schedule
                 </span>
                 <input
@@ -386,7 +401,7 @@ export default function QuizDetails() {
                     onChange={(e) =>
                       setEditData({ ...editData, duration: e.target.value })
                     }
-                    className="flex-1 px-3 h-full border-none outline-none text-black font-bold text-sm bg-transparent cursor-pointer"
+                    className="flex-1 px-3 h-full border-none outline-none text-black dark:text-gray-200 font-bold text-sm bg-transparent cursor-pointer"
                   >
                     <option value="" disabled>
                       Select
@@ -411,7 +426,7 @@ export default function QuizDetails() {
                         score_per_question: e.target.value,
                       })
                     }
-                    className="flex-1 px-3 h-full border-none outline-none text-black font-bold text-sm bg-transparent cursor-pointer"
+                    className="flex-1 px-3 h-full border-none outline-none text-black dark:text-gray-200 font-bold text-sm bg-transparent cursor-pointer"
                   >
                     <option value="" disabled>
                       Select
@@ -430,14 +445,14 @@ export default function QuizDetails() {
             <div className="px-8 py-5 border-t border-black/10 flex justify-end gap-3">
               <button
                 onClick={() => setShowEditModal(false)}
-                className="px-6 py-2 rounded-lg border border-black/20 font-bold text-sm text-black hover:bg-gray-50 transition-colors"
+                className="px-6 py-2 rounded-lg border border-black/20 dark:border-gray-600 font-bold text-sm text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={OnQuizUpdate}
                 disabled={saving || !editData.title.trim()}
-                className="px-6 py-2 rounded-lg bg-[#0D1321] text-white font-bold text-sm hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-2 rounded-lg bg-[#0D1321] text-white font-bold text-sm hover:bg-black dark:bg-gray-900 dark:hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {saving ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

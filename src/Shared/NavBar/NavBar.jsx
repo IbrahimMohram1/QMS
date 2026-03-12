@@ -20,10 +20,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeContext } from "@/Context/DarkModeContext";
+import ToggleTheme from "../ToggleTheme/ToggleTheme";
 export default function NavBar() {
   const { userProfile } = useContext(AuthContext);
   const location = useLocation();
   let { logout } = useAuth();
+  let { darkMode } = useContext(ThemeContext);
 
   // Helper to get title from current path
   const getPageTitle = () => {
@@ -38,42 +41,44 @@ export default function NavBar() {
   };
 
   return (
-    <header className="flex h-20 items-center justify-between bg-white px-8 border-b border-black/10">
+    <header className="flex h-20 items-center justify-between bg-white dark:bg-gray-900 px-8 border-b border-black/10">
       <div className="flex items-center">
-        <h1 className="text-2xl font-bold text-black font-sans tracking-tight">
+        <h1 className="text-2xl font-bold text-black dark:text-gray-100 font-sans tracking-tight">
           {getPageTitle()}
         </h1>
       </div>
 
+      <ToggleTheme />
+
       <div className="flex items-center h-full">
         {/* New Quiz Button */}
-        <div className="px-6 flex items-center h-full border-l border-black/10">
+        <div className="px-6 flex items-center h-full border-l border-black/10 dark:border-gray-600">
           <button
-            className="flex items-center gap-2 rounded-full border border-black/20 bg-white px-5 py-2 text-[14px] font-bold transition-all hover:bg-gray-50 active:scale-95 shadow-sm"
+            className="flex items-center gap-2 rounded-full border border-black/20 dark:border-gray-600 bg-white dark:bg-gray-700 px-5 py-2 text-[14px] font-bold transition-all hover:bg-gray-50 dark:hover:bg-gray-600 active:scale-95 shadow-sm"
             id="new-quiz-btn"
           >
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFF2EB] text-[#E37A49]">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFF2EB] dark:bg-gray-600 text-[#E37A49] dark:text-gray-200">
               <AlarmClockPlus className="h-4 w-4 stroke-[2.5]" />
             </div>
-            <span className="text-black">New quiz</span>
+            <span className="text-black dark:text-gray-100">New quiz</span>
           </button>
         </div>
 
         {/* Mail Icon */}
-        <div className="px-6 flex items-center h-full border-l border-black/10 relative cursor-pointer hover:bg-gray-50 transition-colors">
+        <div className="px-6 flex items-center h-full border-l border-black/10 dark:border-gray-600 relative cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
           <div className="relative">
-            <Mail className="h-6 w-6 text-black fill-black stroke-[1.5]" />
-            <span className="absolute -top-2 -right-2 flex h-4 w-5 items-center justify-center rounded-full bg-[#FFF2EB] text-[10px] font-bold text-black border border-black/10">
+            <Mail className="h-6 w-6 text-black dark:text-gray-200 fill-black dark:fill-gray-200 stroke-[1.5]" />
+            <span className="absolute -top-2 -right-2 flex h-4 w-5 items-center justify-center rounded-full bg-[#FFF2EB] dark:bg-gray-600 text-[10px] font-bold text-black dark:text-gray-200 border border-black/10 dark:border-gray-600">
               10
             </span>
           </div>
         </div>
 
         {/* Bell Icon */}
-        <div className="px-6 flex items-center h-full border-l border-black/10 relative cursor-pointer hover:bg-gray-50 transition-colors">
+        <div className="px-6 flex items-center h-full border-l border-black/10 dark:border-gray-600 relative cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
           <div className="relative">
-            <Bell className="h-6 w-6 text-black fill-black stroke-[1.5]" />
-            <span className="absolute -top-2 -right-2 flex h-4 w-5 items-center justify-center rounded-full bg-[#FFF2EB] text-[10px] font-bold text-black border border-black/10">
+            <Bell className="h-6 w-6 text-black dark:text-gray-200 fill-black dark:fill-gray-200 stroke-[1.5]" />
+            <span className="absolute -top-2 -right-2 flex h-4 w-5 items-center justify-center rounded-full bg-[#FFF2EB] dark:bg-gray-600 text-[10px] font-bold text-black dark:text-gray-200 border border-black/10 dark:border-gray-600">
               10
             </span>
           </div>
@@ -83,11 +88,11 @@ export default function NavBar() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div
-              className="px-6 flex items-center gap-4 cursor-pointer group h-full border-l border-black/10 hover:bg-gray-50 transition-colors"
+              className="px-6 flex items-center gap-4 cursor-pointer group h-full border-l border-black/10 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               id="user-profile-menu"
             >
               <div className="flex flex-col items-start">
-                <span className="text-sm font-bold text-black leading-tight">
+                <span className="text-sm font-bold text-black dark:text-gray-100 leading-tight">
                   {userProfile
                     ? `${userProfile.first_name} ${userProfile.last_name || ""}`
                     : "User Name"}
@@ -97,24 +102,24 @@ export default function NavBar() {
                 </span>
               </div>
 
-              <ChevronDown className="h-5 w-5 text-black/30 transition-transform group-hover:translate-y-0.5" />
+              <ChevronDown className="h-5 w-5 text-black/30 dark:text-gray-400 transition-transform group-hover:translate-y-0.5" />
             </div>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="w-48 bg-white shadow-lg border border-gray-100 rounded-xl p-1">
-            <DropdownMenuLabel className="text-xs text-gray-400 font-medium px-2">
+          <DropdownMenuContent className="w-48 bg-white dark:bg-gray-800 shadow-lg border border-gray-100 dark:border-gray-700 rounded-xl p-1">
+            <DropdownMenuLabel className="text-xs text-gray-400 dark:text-gray-500 font-medium px-2">
               Actions
             </DropdownMenuLabel>
 
             <DropdownMenuSeparator className="bg-gray-100" />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700">
+              <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200">
                 <NavLink
                   to="/dashboard/change-password"
                   className="flex items-center gap-2 w-full"
                 >
-                  <AlarmClockPlus className="w-4 h-4 text-gray-500" />
+                  <AlarmClockPlus className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   Change Password
                 </NavLink>
               </DropdownMenuItem>
@@ -122,7 +127,7 @@ export default function NavBar() {
               <DropdownMenuSeparator className="bg-gray-100" />
 
               <DropdownMenuItem
-                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-red-50 text-sm font-medium text-red-500"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-700 text-sm font-medium text-red-500 dark:text-red-400"
                 onClick={logout}
               >
                 <LogOut className="w-4 h-4 text-red-500" />

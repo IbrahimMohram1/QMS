@@ -124,7 +124,7 @@ export default function Groups() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto font-sans">
+    <div className="p-6 max-w-7xl mx-auto font-sans ">
       <DeleteConfirmation
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
@@ -138,9 +138,9 @@ export default function Groups() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-2xl p-0 border-none rounded-none shadow-2xl overflow-hidden flex flex-col outline-none">
           {/* Header Section */}
-          <div className="flex justify-between items-stretch border-b border-gray-300 bg-white">
+          <div className="flex justify-between items-stretch border-b border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
             <div className="flex-1 p-6 flex items-center">
-              <h2 className="text-2xl font-bold text-black tracking-tight">
+              <h2 className="text-2xl font-bold text-black dark:text-gray-100 tracking-tight">
                 {isEditMode ? "Update Group" : "Set up a new Group"}
               </h2>
             </div>
@@ -150,22 +150,30 @@ export default function Groups() {
                 onClick={handleSubmit}
                 className="w-20 flex items-center justify-center hover:bg-gray-50 border-r border-gray-300 transition-colors py-6"
               >
-                <Check size={36} strokeWidth={2.5} className="text-black" />
+                <Check
+                  size={36}
+                  strokeWidth={2.5}
+                  className="text-black dark:text-white"
+                />
               </button>
 
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="w-20 flex items-center justify-center hover:bg-gray-50 transition-colors py-6"
               >
-                <X size={36} strokeWidth={2.5} className="text-black" />
+                <X
+                  size={36}
+                  strokeWidth={2.5}
+                  className="text-black dark:text-white"
+                />
               </button>
             </div>
           </div>
 
           {/* Body Section */}
-          <div className="p-10 space-y-8 bg-white min-h-[300px] overflow-auto">
+          <div className="p-10 space-y-8 bg-white dark:bg-gray-800 min-h-[300px] overflow-auto">
             {/* Group Name Input Group */}
-            <div className="flex items-center border border-gray-300 rounded-2xl overflow-hidden ring-offset-background focus-within:ring-2 focus-within:ring-black/5">
+            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-2xl overflow-hidden ring-offset-background focus-within:ring-2 focus-within:ring-black/5">
               <div className="bg-[#FEF1E8] px-6 py-4 border-r border-gray-300 min-w-[160px] text-lg font-medium text-black">
                 Group Name
               </div>
@@ -183,7 +191,7 @@ export default function Groups() {
             <div className="relative">
               <div
                 onClick={() => setOpenDropdown(!openDropdown)}
-                className="flex items-center border border-gray-300 rounded-2xl overflow-hidden cursor-pointer hover:border-gray-400 transition-all"
+                className="flex items-center border border-gray-300 dark:border-gray-600 rounded-2xl overflow-hidden cursor-pointer hover:border-gray-400 dark:hover:border-gray-500 transition-all"
               >
                 <div className="bg-[#FEF1E8] px-6 py-4 border-r border-gray-300 min-w-[160px] text-lg font-medium text-black">
                   List Students
@@ -203,14 +211,14 @@ export default function Groups() {
                   <ChevronDown
                     size={32}
                     strokeWidth={2}
-                    className="text-black ml-2"
+                    className="text-black dark:text-white ml-2"
                   />
                 </div>
               </div>
 
               {/* Dropdown Menu */}
               {openDropdown && (
-                <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto">
+                <div className="absolute z-50 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl shadow-2xl max-h-64 overflow-y-auto">
                   {students.length === 0 ? (
                     <div className="p-5 text-gray-400 text-center">
                       No students available
@@ -220,7 +228,7 @@ export default function Groups() {
                       <div
                         key={student._id}
                         onClick={() => toggleStudent(student._id)}
-                        className="p-4 hover:bg-orange-50 cursor-pointer flex justify-between items-center border-b border-gray-50 last:border-none transition-colors"
+                        className="p-4 hover:bg-orange-50 dark:hover:bg-orange-900 cursor-pointer flex justify-between items-center border-b border-gray-50 dark:border-gray-700 last:border-none transition-colors"
                       >
                         <span className="text-lg text-gray-700">
                           {student.first_name} {student.last_name}
@@ -241,8 +249,10 @@ export default function Groups() {
       </Dialog>
 
       {/* ================= MAIN UI ================= */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Groups Management</h1>
+      <div className="flex justify-between items-center mb-8  ">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+          Groups Management
+        </h1>
         <Button
           onClick={() => openModal()}
           className="rounded-full bg-black text-white hover:bg-gray-800 gap-2 px-6 h-12 shadow-lg transition-transform active:scale-95"
@@ -252,8 +262,8 @@ export default function Groups() {
         </Button>
       </div>
 
-      <Card className="p-8 shadow-sm border-gray-100 rounded-3xl">
-        <h2 className="text-xl font-bold text-gray-800 mb-8 border-b pb-4">
+      <Card className="p-8 shadow-sm border-gray-100 dark:border-gray-700 rounded-3xl bg-white dark:bg-gray-800">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-8 border-b pb-4">
           Groups list
         </h2>
 
@@ -269,10 +279,10 @@ export default function Groups() {
               groups.map((group) => (
                 <div
                   key={group._id}
-                  className="flex items-center justify-between p-6 border border-gray-100 rounded-2xl hover:border-orange-200 hover:shadow-md transition-all bg-white"
+                  className="flex items-center justify-between p-6 border border-gray-100 dark:border-gray-700 rounded-2xl hover:border-orange-200 hover:shadow-md transition-all bg-white dark:bg-gray-800"
                 >
                   <div>
-                    <h3 className="font-bold text-xl text-gray-800">
+                    <h3 className="font-bold text-xl text-gray-800 dark:text-gray-100">
                       Group : {group.name}
                     </h3>
                     <p className="text-sm font-medium text-orange-600 mt-1">

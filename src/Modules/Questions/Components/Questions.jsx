@@ -108,16 +108,16 @@ export default function Questions() {
   }, []);
 
   return (
-    <div className="py-6 bg-white min-h-screen">
-      <div className="mx-6 border border-black/20 rounded-[10px] shadow-sm overflow-hidden">
+    <div className="py-6 bg-white dark:bg-gray-900 min-h-screen">
+      <div className="mx-6 border border-black/20 dark:border-gray-700 rounded-[10px] shadow-sm overflow-hidden">
         {/* Header Section */}
-        <div className="px-6 py-4 flex justify-between items-center bg-white border-b border-black/20">
-          <h2 className="text-2xl font-bold text-[#000000]">
+        <div className="px-6 py-4 flex justify-between items-center bg-white dark:bg-gray-800 border-b border-black/20 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-black dark:text-gray-100">
             Bank of Questions
           </h2>
           <Button
             onClick={handleAddDialog}
-            className="bg-white hover:bg-gray-50 text-[#1F2937] border border-black/20 rounded-[30px] px-12 h-12 flex items-center gap-3 shadow-md font-bold transition-all"
+            className="bg-white dark:bg-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 text-[#1F2937] border border-black/20 dark:border-gray-600 rounded-[30px] px-12 h-12 flex items-center gap-3 shadow-md font-bold transition-all"
           >
             <Plus
               className="bg-black text-white rounded-full p-1 size-6"
@@ -129,20 +129,20 @@ export default function Questions() {
 
         {/* Table Content */}
         <div className="px-6 py-6">
-          <div className="border border-black/20  shadow-sm rounded-[10px] overflow-hidden">
+          <div className="border border-black/20 dark:border-gray-700 shadow-sm rounded-[10px] overflow-hidden">
             <Table>
-              <TableHeader className="bg-[#0D1321]">
+              <TableHeader className="bg-[#0D1321] text-white ">
                 <TableRow className="hover:bg-transparent border-none">
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 last:border-r-0">
+                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0">
                     TITLE
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 last:border-r-0">
+                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0">
                     DESCRIPTION
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 last:border-r-0 text-center">
+                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0 text-center">
                     DIFFICULTY
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 last:border-r-0 text-center">
+                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0 text-center">
                     TYPE
                   </TableHead>
                   <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider text-center">
@@ -157,10 +157,10 @@ export default function Questions() {
                       key={question._id || index}
                       className="border-b border-black/20 last:border-0 hover:bg-gray-50/40"
                     >
-                      <TableCell className="px-6 py-6  text-black font-medium text-[16px] border-r border-black/20 last:border-r-0">
+                      <TableCell className="px-6 py-6  text-black dark:text-gray-100 font-medium text-[16px] border-r border-black/20 dark:border-gray-700 last:border-r-0">
                         {question.title}
                       </TableCell>
-                      <TableCell className="px-6 py-6 text-black font-medium text-[16px] border-r border-black/20 last:border-r-0">
+                      <TableCell className="px-6 py-6 text-black dark:text-gray-100 font-medium text-[16px] border-r border-black/20 dark:border-gray-700 last:border-r-0">
                         {question.description ||
                           question.question ||
                           "No description"}
@@ -227,7 +227,7 @@ export default function Questions() {
                   <TableRow>
                     <TableCell
                       colSpan={5}
-                      className="h-24 text-center text-gray-500"
+                      className="h-24 text-center text-gray-500 dark:text-gray-400"
                     >
                       No questions found.
                     </TableCell>
@@ -246,11 +246,11 @@ export default function Questions() {
             if (!open) setSelectedQuestion(null);
           }}
         >
-          <DialogContent className="max-w-6xl! w-[95vw]! p-0 overflow-hidden border-none rounded-[15px] bg-white shadow-2xl [&>button]:hidden">
+          <DialogContent className="max-w-6xl! w-[95vw]! p-0 overflow-hidden border-none rounded-[15px] bg-white dark:bg-gray-800 shadow-2xl [&>button]:hidden">
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Header Section with Actions */}
-              <div className="flex justify-between items-center px-12 py-0 border-b border-black/10 min-h-[90px] bg-white">
-                <DialogTitle className="text-3xl font-extrabold text-black font-sans tracking-tight">
+              <div className="flex justify-between items-center px-12 py-0 border-b border-black/10 dark:border-gray-700 min-h-[90px] bg-white dark:bg-gray-800">
+                <DialogTitle className="text-3xl font-extrabold text-black dark:text-gray-100 font-sans tracking-tight">
                   {selectedQuestion
                     ? "Update question"
                     : "Set up a new question"}
@@ -283,7 +283,7 @@ export default function Questions() {
               <FieldGroup className="p-10 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-1.5 h-6 bg-[#FB7C19] rounded-full"></div>
-                  <h3 className="text-xl font-bold text-black border-transparent">
+                  <h3 className="text-xl font-bold text-black dark:text-gray-100 border-transparent">
                     Details
                   </h3>
                 </div>
@@ -291,7 +291,7 @@ export default function Questions() {
                 {/* Title Field - More compact */}
                 <Field
                   orientation="horizontal"
-                  className="border border-black/15 rounded-[10px] overflow-hidden h-11 bg-white shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
+                  className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
                 >
                   <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[100px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
                     Title:
@@ -306,7 +306,7 @@ export default function Questions() {
                 {/* Description Field - Adjusted height and move Difficulty after it */}
                 <Field
                   orientation="horizontal"
-                  className="border border-black/15 rounded-[10px] overflow-hidden min-h-[100px] bg-white shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
+                  className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden min-h-[100px] bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
                 >
                   <FieldLabel className="bg-[#FFF1E7] px-5 py-4 flex items-start max-w-[120px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
                     Description
@@ -322,7 +322,7 @@ export default function Questions() {
                 <div className="grid grid-cols-2 gap-x-10">
                   <Field
                     orientation="horizontal"
-                    className="border border-black/15 rounded-[10px] overflow-hidden h-11 bg-white shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
+                    className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
                   >
                     <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[180px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
                       Difficulty
@@ -347,7 +347,7 @@ export default function Questions() {
                     <Field
                       key={opt}
                       orientation="horizontal"
-                      className="border border-black/15 rounded-[10px] overflow-hidden h-11 bg-white shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
+                      className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
                     >
                       <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[50px] justify-center font-bold text-black border-r border-black/10 italic text-xl h-full rounded-none">
                         {opt}
@@ -364,7 +364,7 @@ export default function Questions() {
                 <div className="grid grid-cols-2 gap-x-10 pt-1">
                   <Field
                     orientation="horizontal"
-                    className="border border-black/15 rounded-[10px] overflow-hidden h-11 bg-white shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
+                    className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
                   >
                     <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[180px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
                       Right Answer
@@ -385,7 +385,7 @@ export default function Questions() {
 
                   <Field
                     orientation="horizontal"
-                    className="border border-black/15 rounded-[10px] overflow-hidden h-11 bg-white shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
+                    className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
                   >
                     <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[180px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
                       Category type

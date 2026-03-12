@@ -24,10 +24,10 @@ const Logo = () => (
   <div className="flex items-center group-data-[collapsible=icon]:justify-center">
     <div className="relative flex items-center justify-center">
       {/* The double circle / X logo style */}
-      <div className="w-10 h-10 border-[3px] border-black rounded-full flex items-center justify-center bg-white font-extrabold text-lg z-10 translate-x-1 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:border-[3px]">
-        <span>X</span>
+      <div className="w-10 h-10 border-[3px] border-black dark:border-gray-300 rounded-full flex items-center justify-center bg-white dark:bg-gray-900 font-extrabold text-lg z-10 translate-x-1 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:border-[3px]">
+        <span className="text-black dark:text-white">X</span>
       </div>
-      <div className="w-10 h-10 border-[3px] border-black rounded-full flex items-center justify-center bg-white z-0 -translate-x-1 group-data-[collapsible=icon]:hidden">
+      <div className="w-10 h-10 border-[3px] border-black dark:border-gray-300 rounded-full flex items-center justify-center bg-white dark:bg-gray-900 z-0 -translate-x-1 group-data-[collapsible=icon]:hidden">
         <svg
           width="18"
           height="18"
@@ -51,9 +51,9 @@ export function CustomSidebarTrigger() {
   return (
     <button
       onClick={toggleSidebar}
-      className="p-1 hover:bg-gray-100 rounded-lg transition-colors group-data-[collapsible=icon]:mx-auto"
+      className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors group-data-[collapsible=icon]:mx-auto"
     >
-      <Menu className="w-8 h-8 text-black font-bold" />
+      <Menu className="w-8 h-8 text-black dark:text-white font-bold" />
     </button>
   );
 }
@@ -70,8 +70,11 @@ const NAV_LINKS = [
 export default function SideBar() {
   return (
     <SidebarProvider className="w-fit">
-      <Sidebar className="border-r border-black/20 bg-white" collapsible="icon">
-        <SidebarHeader className="flex flex-row items-center gap-4 p-6 pt-8 pb-10 group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:flex-col">
+      <Sidebar
+        className="border-r border-black/20 dark:border-gray-700 bg-white dark:bg-gray-800"
+        collapsible="icon"
+      >
+        <SidebarHeader className="flex flex-row items-center gap-4 p-6 pt-8 pb-10 group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:flex-col dark:text-gray-100">
           <CustomSidebarTrigger />
           <div className="group-data-[collapsible=icon]:mt-2 pr-2 group-data-[collapsible=icon]:pr-0">
             <Logo />
@@ -84,16 +87,16 @@ export default function SideBar() {
               {NAV_LINKS.map((link) => (
                 <SidebarMenuItem
                   key={link.name}
-                  className="px-0 relative border-b border-black/20"
+                  className="px-0 relative border-b border-black/20 dark:border-gray-700 "
                 >
                   <NavLink
                     to={link.path}
                     end={link.exact}
                     className={({ isActive }) =>
-                      `flex items-center gap-5 py-6 transition-all duration-300 relative font-bold ${
+                      `flex items-center gap-5 py-6 transition-all duration-300 relative font-bold  ${
                         isActive
                           ? "bg-gray-100 text-[#000000]  w-full z-20 group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:rounded-none group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center pl-8 group-data-[collapsible=icon]:pl-0 border-r-4 border-black border-l-0"
-                          : "text-[#000000] hover:bg-gray-50 pl-8 group-data-[collapsible=icon]:pl-0 w-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-r-4 border-transparent"
+                          : "text-[#000000] dark:text-white hover:bg-gray-50 dark:hover:text-gray-700 pl-8 group-data-[collapsible=icon]:pl-0 w-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-r-4 border-transparent"
                       }`
                     }
                   >

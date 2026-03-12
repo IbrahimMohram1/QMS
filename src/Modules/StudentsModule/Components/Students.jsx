@@ -118,11 +118,13 @@ export default function Students() {
       >
         {selectedStudent ? (
           <>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex gap-x-3 text-gray-600 my-2">
+            <div className="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg">
+              <div className="flex gap-x-3 text-gray-600 dark:text-gray-300 my-2">
                 <User />
 
-                <h4 className="text-lg font-medium">Personal Information</h4>
+                <h4 className="text-lg font-medium text-black dark:text-gray-100">
+                  Personal Information
+                </h4>
               </div>
               <div className="flex flex-col gap-y-2">
                 <p>
@@ -140,8 +142,8 @@ export default function Students() {
                 </p>
               </div>
             </div>
-            <div className="bg-green-50 p-4 rounded-lg my-4">
-              <h3 className="flex items-center text-gray-700 font-semibold text-lg mb-2 gap-x-2">
+            <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg my-4">
+              <h3 className="flex items-center text-gray-700 dark:text-gray-200 font-semibold text-lg mb-2 gap-x-2">
                 <Users size={18} />
                 Group Information
               </h3>
@@ -152,7 +154,7 @@ export default function Students() {
                   </p>
                 </div>
               ) : (
-                <p className="text-gray-500">
+                <p className="text-gray-500 dark:text-gray-400">
                   This student is not assigned to any group.
                 </p>
               )}
@@ -162,15 +164,17 @@ export default function Students() {
           <Loading />
         )}
       </DialogDetails>
-      <div className="w-11/12 mx-auto border border-black/10 p-4 rounded-md my-5">
+      <div className=" mx-auto    dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
         {loading ? (
           <Loading height={"h-screen"} />
         ) : (
-          <div>
-            <h2 className="text-xl font-medium">Student List</h2>
+          <div className="w-11/12 mx-auto my-5 border  p-4 border-gray-200 rounded-md dark:border-gray-500">
+            <h2 className="text-xl font-medium text-black dark:text-gray-100">
+              Student List
+            </h2>
             <div className="flex gap-x-4 my-4 flex-wrap">
               <Input
-                className=" md:w-1/3 py-6 w-full"
+                className=" md:w-1/3 py-6 w-full dark:bg-gray-700 dark:text-white placeholder:text-black dark:placeholder:text-white"
                 placeholder="Search By Name"
                 value={searchQuery}
                 onChange={(e) => {
@@ -184,7 +188,7 @@ export default function Students() {
                 <Card
                   key={student._id}
                   id={`student-${student._id}`}
-                  className="w-full py-0 rounded pr-5 h-32"
+                  className="w-full py-0 rounded pr-5 h-32 bg-white dark:bg-gray-800"
                 >
                   <div className="flex items-center justify-between h-full overflow-hidden">
                     <div className="flex items-center gap-4 h-full">
@@ -195,15 +199,15 @@ export default function Students() {
                       />
 
                       <div className="flex flex-col justify-center gap-y-3 ">
-                        <CardTitle>
+                        <CardTitle className="dark:text-white">
                           {student.first_name} {student.last_name}
                         </CardTitle>
                         <CardDescription className="">
-                          <div className="flex items-center gap-1 text-sm text-gray-600">
-                            <span className="font-medium text-gray-400 text-base">
+                          <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                            <span className="font-medium text-gray-400 dark:text-gray-500 text-base">
                               Group:
                             </span>
-                            <span className="font-semibold text-gray-500 text-base">
+                            <span className="font-semibold text-gray-500 dark:text-gray-300 text-base">
                               {student.group ? student.group.name : "No Group"}
                             </span>
                           </div>
@@ -230,11 +234,11 @@ export default function Students() {
 
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button className="rounded-full w-8 h-8 bg-black text-white self-center">
+                        <Button className="rounded-full w-8 h-8 bg-black text-white dark:bg-gray-700 dark:text-white self-center">
                           <ArrowRight size={18} />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-48 bg-white shadow-lg border border-gray-100 rounded-xl p-1">
+                      <DropdownMenuContent className="w-48 bg-white dark:bg-gray-800 shadow-lg border border-gray-100 dark:border-gray-700 rounded-xl p-1">
                         <DropdownMenuLabel className="text-xs text-gray-400 font-medium px-2">
                           Actions
                         </DropdownMenuLabel>
@@ -242,14 +246,14 @@ export default function Students() {
                         <DropdownMenuGroup>
                           <DropdownMenuItem
                             onClick={() => handleViewProfile(student._id)}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-50 text-sm font-medium text-gray-700"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200"
                           >
                             <Eye className="w-4 h-4 text-gray-500" />
                             View Profile
                           </DropdownMenuItem>
                           <DropdownMenuSeparator className="bg-gray-100" />
                           <DropdownMenuItem
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-red-50 text-sm font-medium text-red-500"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-900 text-sm font-medium text-red-500"
                             onClick={() => {
                               setStudentToDelete(student);
                               setConfirmOpen(true);
