@@ -71,10 +71,10 @@ export default function SideBar() {
   return (
     <SidebarProvider className="w-fit">
       <Sidebar
-        className="border-r border-black/20 dark:border-gray-700 bg-white dark:bg-gray-800"
+        className="border-r border-black/20 dark:border-gray-700  bg-white dark:bg-gray-800 "
         collapsible="icon"
       >
-        <SidebarHeader className="flex flex-row items-center gap-4 p-6 pt-8 pb-10 group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:flex-col dark:text-gray-100">
+        <SidebarHeader className="flex flex-row items-center  px-8 my-3  group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:flex-col dark:text-gray-100">
           <CustomSidebarTrigger />
           <div className="group-data-[collapsible=icon]:mt-2 pr-2 group-data-[collapsible=icon]:pr-0">
             <Logo />
@@ -93,7 +93,7 @@ export default function SideBar() {
                     to={link.path}
                     end={link.exact}
                     className={({ isActive }) =>
-                      `flex items-center gap-5 py-6 transition-all duration-300 relative font-bold  ${
+                      `flex items-center gap-5 py-5 transition-all duration-300 relative font-bold  ${
                         isActive
                           ? "bg-gray-100 text-[#000000]  w-full z-20 group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:rounded-none group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center pl-8 group-data-[collapsible=icon]:pl-0 border-r-4 border-black border-l-0"
                           : "text-[#000000] dark:text-white hover:bg-gray-50 dark:hover:text-gray-700 pl-8 group-data-[collapsible=icon]:pl-0 w-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-r-4 border-transparent"
@@ -111,7 +111,7 @@ export default function SideBar() {
                         >
                           <link.icon className="w-6 h-6 group-data-[collapsible=icon]:w-5 group-data-[collapsible=icon]:h-5" />
                         </div>
-                        <span className="text-[17px] tracking-tight group-data-[collapsible=icon]:hidden whitespace-nowrap">
+                        <span className=" tracking-tight group-data-[collapsible=icon]:hidden whitespace-nowrap">
                           {link.name}
                         </span>
                       </>

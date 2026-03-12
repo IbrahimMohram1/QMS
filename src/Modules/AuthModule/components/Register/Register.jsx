@@ -37,20 +37,20 @@ export default function Register() {
   return (
     <>
       {/* Heading */}
-      <h2 className="text-[#C5D86D] font-bold mb-5 md:mb-6 lg:mb-8 text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight">
+      <h2 className="text-[#C5D86D] font-bold mb-5 text-3xl leading-tight">
         Create your account and start using QuizWiz!
       </h2>
 
       {/* Tabs */}
-      <div className="flex gap-3 sm:gap-5 md:gap-6 lg:gap-10 mb-6 md:mb-8 lg:mb-10">
+      <div className="flex gap-3 ">
         {/* Sign In Tab (Inactive here) */}
         <Link
           to="/"
-          className="flex-1 max-w-[180px] h-20 sm:h-24 md:h-28 lg:h-30 cursor-pointer bg-[#333333] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#2a2a2a]"
+          className="flex-1 max-w-[180px] py-5 cursor-pointer bg-[#333333] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#2a2a2a]"
         >
           <User
             size={28}
-            className="text-white mb-1 sm:mb-2 sm:w-9 md:w-10 lg:w-[49px]"
+            className="text-white  sm:mb-2 sm:w-9 md:w-10 lg:w-[49px]"
             strokeWidth={1.5}
           />
           <span className="font-bold text-white tracking-wide text-[13px] sm:text-[15px] lg:text-[18px]">
@@ -61,11 +61,11 @@ export default function Register() {
         {/* Sign Up Tab (Active here) */}
         <Link
           to="/register"
-          className="flex-1 max-w-[180px] h-20 sm:h-24 md:h-28 lg:h-30 cursor-pointer bg-[#333333] border-4 lg:border-[5px] border-[#C5D86D] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#1f212f]"
+          className="flex-1 max-w-[180px] py-5 cursor-pointer bg-[#333333] border-4 lg:border-[5px] border-[#C5D86D] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#1f212f]"
         >
           <UserPlus
             size={28}
-            className="text-[#c1d936] mb-1 sm:mb-2 sm:w-9 md:w-10 lg:w-[49px]"
+            className="text-[#c1d936]  sm:mb-2 sm:w-9 md:w-10 lg:w-[49px]"
             strokeWidth={1.5}
           />
           <span className="font-bold text-white tracking-wide text-[13px] sm:text-[15px] lg:text-[18px]">
@@ -76,12 +76,12 @@ export default function Register() {
 
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <FieldGroup className="gap-3 md:gap-4 lg:gap-5">
+        <FieldGroup className="gap-3 ">
           {/* Row for First Name and Last Name */}
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 lg:gap-5 w-full">
+          <div className="flex flex-col sm:flex-row gap-3  w-full">
             {/* First Name Field */}
             <Field className="flex-1">
-              <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium mb-1">
+              <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium ">
                 Your first name
               </FieldLabel>
               <div
@@ -113,7 +113,7 @@ export default function Register() {
 
             {/* Last Name Field */}
             <Field className="flex-1">
-              <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium mb-1">
+              <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium ">
                 Your last name
               </FieldLabel>
               <div
@@ -145,8 +145,8 @@ export default function Register() {
           </div>
 
           {/* Email Field */}
-          <Field>
-            <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium mb-1">
+          <Field className="gap-1">
+            <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] my-0 font-medium ">
               Your email address
             </FieldLabel>
             <div
@@ -181,8 +181,8 @@ export default function Register() {
           </Field>
 
           {/* Role Field */}
-          <Field>
-            <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium mb-1">
+          <Field className="gap-1">
+            <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium ">
               Your role
             </FieldLabel>
             <div
@@ -225,8 +225,8 @@ export default function Register() {
           </Field>
 
           {/* Password Field */}
-          <Field>
-            <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium mb-1">
+          <Field className="gap-1">
+            <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium ">
               Password
             </FieldLabel>
             <div
@@ -267,7 +267,7 @@ export default function Register() {
         </FieldGroup>
 
         {/* Actions */}
-        <div className="flex items-center mt-6 md:mt-8 lg:mt-10 w-full">
+        <div className="flex items-center my-2 w-full">
           <Button
             disabled={loading}
             type="submit"

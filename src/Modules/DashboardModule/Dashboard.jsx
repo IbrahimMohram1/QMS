@@ -85,9 +85,9 @@ export default function Dashboard() {
   }, []);
   return (
     <>
-      <div className="w-11/12 mx-auto flex justify-center items-start mt-12 gap-x-5 ">
+      <div className="w-11/12 mx-auto flex justify-center items-start mt-8 gap-x-5 flex-wrap gap-y-5 md:flex-nowrap ">
         <div className="md:w-1/2 w-full border border-black/10 dark:border-gray-700 p-5 rounded-lg bg-gray-50 dark:bg-gray-900 ">
-          <h2 className="font-semibold text-lg text-black dark:text-gray-100">
+          <h2 className="font-semibold text-base text-black dark:text-gray-100 my-3">
             Upcoming 5 quizzes
           </h2>
 
@@ -97,23 +97,23 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
-              <div className="flex flex-col gap-y-2 my-3">
+              <div className="flex flex-col gap-y-2 ">
                 {allQuizzes.map((quiz, index) => (
                   <Link key={quiz._id} to={`/dashboard/quizes/${quiz._id}`}>
                     <Card
                       id={`student-${quiz._id}`}
-                      className="w-full  rounded-lg px-5 py-2  border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                      className="w-full  rounded-lg px-5 py-0  border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
-                      <div className="flex items-center justify-between h-full   ">
-                        <div className="flex items-center gap-4 ">
-                          <div className="flex flex-col justify-center gap-y-2  ">
-                            <CardTitle className="mt-2 dark:text-white">
+                      <div className="flex items-center justify-between     ">
+                        <div className="flex items-center gap-y-4 ">
+                          <div className="flex flex-col justify-center gap-y-1  ">
+                            <CardTitle className="mt-2 dark:text-white text-[14px]">
                               {quiz.title}
                             </CardTitle>
                             <CardDescription className="">
                               <div className="flex  flex-col  text-sm text-gray-500 dark:text-gray-400 gap-y-1">
                                 <span className="flex gap-x-2  ">
-                                  <CalendarDays size={16} />{" "}
+                                  <CalendarDays size={14} />{" "}
                                   <span className="font-semibold">
                                     {" "}
                                     Scheduled :

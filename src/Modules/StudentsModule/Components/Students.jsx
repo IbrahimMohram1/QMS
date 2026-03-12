@@ -168,7 +168,7 @@ export default function Students() {
         {loading ? (
           <Loading height={"h-screen"} />
         ) : (
-          <div className="w-11/12 mx-auto my-5 border  p-4 border-gray-200 rounded-md dark:border-gray-500">
+          <div className="mx-auto my-5 border  p-4 border-gray-200 rounded-md dark:border-gray-500">
             <h2 className="text-xl font-medium text-black dark:text-gray-100">
               Student List
             </h2>
@@ -188,7 +188,7 @@ export default function Students() {
                 <Card
                   key={student._id}
                   id={`student-${student._id}`}
-                  className="w-full py-0 rounded pr-5 h-32 bg-white dark:bg-gray-800"
+                  className="w-full py-0 rounded pr-5 h-26 bg-white dark:bg-gray-800"
                 >
                   <div className="flex items-center justify-between h-full overflow-hidden">
                     <div className="flex items-center gap-4 h-full">
@@ -198,21 +198,21 @@ export default function Students() {
                         className="h-full aspect-square object-cover"
                       />
 
-                      <div className="flex flex-col justify-center gap-y-3 ">
-                        <CardTitle className="dark:text-white">
+                      <div className="flex flex-col justify-center gap-y-1 ">
+                        <CardTitle className="dark:text-white text-sm">
                           {student.first_name} {student.last_name}
                         </CardTitle>
                         <CardDescription className="">
                           <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                            <span className="font-medium text-gray-400 dark:text-gray-500 text-base">
+                            <span className="font-medium text-gray-400 dark:text-gray-500 text-sm">
                               Group:
                             </span>
-                            <span className="font-semibold text-gray-500 dark:text-gray-300 text-base">
+                            <span className="font-semibold text-gray-500 dark:text-gray-300 text-sm">
                               {student.group ? student.group.name : "No Group"}
                             </span>
                           </div>
                           <div
-                            className={`flex items-center my-2   font-medium w-fit  py-0.5
+                            className={`flex items-center my-1  font-medium w-fit  py-0
   ${student.status === "active" ? " text-green-600" : " text-red-600"}`}
                           >
                             {student.status === "active" ? (
@@ -271,6 +271,7 @@ export default function Students() {
             </div>
             <div>
               <Button
+                className="text-xs"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => prev - 1)}
               >
@@ -282,6 +283,7 @@ export default function Students() {
               </span>
 
               <Button
+                className="text-xs"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((prev) => prev + 1)}
               >

@@ -9,7 +9,7 @@ export default function MasterLayout() {
       <SideBar />
       <div className="flex-1 w-full overflow-hidden flex flex-col">
         <NavBar />
-        <main className="flex-1 overflow-auto bg-gray-50/30 dark:bg-gray-900">
+        <main className=" w-11/12 mx-auto text-base overflow-auto bg-gray-50/30 dark:bg-gray-900">
           <Outlet />
         </main>
       </div>

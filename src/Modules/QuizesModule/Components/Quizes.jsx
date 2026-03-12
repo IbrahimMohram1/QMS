@@ -392,7 +392,7 @@ export default function Quizes() {
                 </span>
                 <Input
                   {...register("title", { required: true })}
-                  className="flex-1 h-full border-none shadow-none text-black dark:text-gray-200 font-bold text-sm bg-transparent placeholder:text-gray-300 rounded-none focus-visible:ring-0"
+                  className="flex-1 h-full border-none shadow-none text-black dark:text-gray-900 font-bold text-sm bg-transparent placeholder:text-gray-300 rounded-none focus-visible:ring-0"
                   placeholder="Enter quiz title..."
                 />
               </div>
@@ -402,7 +402,7 @@ export default function Quizes() {
                 <div className="flex items-center border border-[#0000004D] rounded-[10px] overflow-hidden h-12 bg-white">
                   <span className="bg-[#FFEDDF] px-4 h-full flex items-center font-bold text-black text-sm border-r border-[#0000004D] shrink-0 whitespace-nowrap">
                     Duration{" "}
-                    <span className="text-[11px] text-black/40 dark:text-gray-400 ml-1">
+                    <span className="text-[11px] text-black/40 dark:text-gray-900 ml-1">
                       (min)
                     </span>
                   </span>
@@ -474,7 +474,7 @@ export default function Quizes() {
                   <input
                     type="datetime-local"
                     {...register("schadule", { required: true })}
-                    className="flex-1 bg-transparent border-none outline-none text-black dark:text-gray-200 font-bold text-sm cursor-pointer"
+                    className="flex-1 bg-transparent border-none outline-none text-black dark:text-gray-900 font-bold text-sm cursor-pointer"
                   />
                 </div>
               </div>
@@ -560,7 +560,7 @@ export default function Quizes() {
                 <span className="bg-[#F5F5F5] dark:bg-gray-700 px-5 py-3 font-extrabold text-black dark:text-gray-200 text-sm tracking-widest border-r border-black/10 dark:border-gray-600 shrink-0">
                   CODE:
                 </span>
-                <span className="flex-1 px-5 py-3 font-extrabold text-black text-lg tracking-widest text-center">
+                <span className="flex-1 px-5 py-3 font-extrabold text-black dark:text-white text-lg tracking-widest text-center">
                   {quizCode || "—"}
                 </span>
                 <button
@@ -587,7 +587,7 @@ export default function Quizes() {
 
                   <Input
                     {...registerJoin("code", { required: true })}
-                    className=" pl-25 py-4 h-auto placeholder:text-black placeholder:text-base"
+                    className=" pl-25 py-4 h-auto dark:text-white dark:placeholder:text-white placeholder:text-black placeholder:text-base"
                     type="text"
                     placeholder="Enter Your Code to join"
                   />

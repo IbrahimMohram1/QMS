@@ -124,7 +124,7 @@ export default function Groups() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto font-sans ">
+    <div className="p-6 w-11/12  mx-auto font-sans ">
       <DeleteConfirmation
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
@@ -249,7 +249,7 @@ export default function Groups() {
       </Dialog>
 
       {/* ================= MAIN UI ================= */}
-      <div className="flex justify-between items-center mb-8  ">
+      <div className="flex justify-between items-center mb-8   ">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
           Groups Management
         </h1>

@@ -33,11 +33,11 @@ export default function Login() {
       </h2>
 
       {/* Tabs */}
-      <div className="flex gap-3 sm:gap-5 md:gap-6 lg:gap-10 mb-6 md:mb-8 lg:mb-10">
+      <div className="flex gap-5">
         {/* Sign In Tab (Active) */}
         <Link
           to="/"
-          className="flex-1 max-w-[180px] h-20 sm:h-24 md:h-28 lg:h-30 cursor-pointer bg-[#333333] border-4 lg:border-[5px] border-[#C5D86D] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#1f212f]"
+          className="flex-1 max-w-[180px]   py-5 cursor-pointer bg-[#333333] border-4 lg:border-[5px] border-[#C5D86D] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#1f212f]"
         >
           <User
             size={28}
@@ -52,7 +52,7 @@ export default function Login() {
         {/* Sign Up Tab (Inactive) */}
         <Link
           to="/register"
-          className="flex-1 max-w-[180px] h-20 sm:h-24 md:h-28 lg:h-30 cursor-pointer bg-[#333333] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#2a2a2a]"
+          className="flex-1 max-w-[180px]  py-5 cursor-pointer bg-[#333333] rounded-[10px] flex flex-col items-center justify-center transition-all shadow-md hover:bg-[#2a2a2a]"
         >
           <UserPlus
             size={28}
@@ -66,8 +66,8 @@ export default function Login() {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <FieldGroup className="gap-5 md:gap-6 lg:gap-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full my-5">
+        <FieldGroup className="gap-3 md:gap-3 lg:gap-3">
           {/* Email Field */}
           <Field>
             <FieldLabel className="text-white text-sm sm:text-base lg:text-[20px] font-medium mb-1">

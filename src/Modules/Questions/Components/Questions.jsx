@@ -108,44 +108,45 @@ export default function Questions() {
   }, []);
 
   return (
-    <div className="py-6 bg-white dark:bg-gray-900 min-h-screen">
-      <div className="mx-6 border border-black/20 dark:border-gray-700 rounded-[10px] shadow-sm overflow-hidden">
+    <div className="py-6 w-full bg-white dark:bg-gray-900 min-h-screen">
+      <div className=" border border-black/20 dark:border-gray-700 rounded-[10px] shadow-sm overflow-hidden">
         {/* Header Section */}
         <div className="px-6 py-4 flex justify-between items-center bg-white dark:bg-gray-800 border-b border-black/20 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-black dark:text-gray-100">
+          <h2 className="text-xl font-bold text-black dark:text-gray-100">
             Bank of Questions
           </h2>
           <Button
             onClick={handleAddDialog}
-            className="bg-white dark:bg-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 text-[#1F2937] border border-black/20 dark:border-gray-600 rounded-[30px] px-12 h-12 flex items-center gap-3 shadow-md font-bold transition-all"
+            className="bg-white dark:bg-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 text-[#1F2937] border border-black/20 dark:border-gray-600 rounded-[30px]  py-5 flex items-center gap-2 shadow-md font-bold transition-all"
           >
             <Plus
-              className="bg-black text-white rounded-full p-1 size-6"
+              size={18}
+              className="bg-black text-white rounded-full p-1 size-5"
               strokeWidth={3}
             />
-            <span className="text-lg">Add Question</span>
+            <span className="text-base">Add Question</span>
           </Button>
         </div>
 
         {/* Table Content */}
-        <div className="px-6 py-6">
+        <div className="px-6 py-6 ">
           <div className="border border-black/20 dark:border-gray-700 shadow-sm rounded-[10px] overflow-hidden">
             <Table>
               <TableHeader className="bg-[#0D1321] text-white ">
                 <TableRow className="hover:bg-transparent border-none">
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0">
+                  <TableHead className="text-white font-bold uppercase text-center text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0">
                     TITLE
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0">
+                  <TableHead className="text-white font-bold uppercase text-center text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0">
                     DESCRIPTION
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0 text-center">
+                  <TableHead className="text-white font-bold uppercase  text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0 text-center">
                     DIFFICULTY
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0 text-center">
+                  <TableHead className="text-white font-bold uppercase  text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0 text-center">
                     TYPE
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase py-4 px-6 text-[14px] tracking-wider text-center">
+                  <TableHead className="text-white font-bold uppercase text-center text-[14px] tracking-wider text">
                     ACTIONS
                   </TableHead>
                 </TableRow>
@@ -157,17 +158,17 @@ export default function Questions() {
                       key={question._id || index}
                       className="border-b border-black/20 last:border-0 hover:bg-gray-50/40"
                     >
-                      <TableCell className="px-6 py-6  text-black dark:text-gray-100 font-medium text-[16px] border-r border-black/20 dark:border-gray-700 last:border-r-0">
+                      <TableCell className="text-center py-6  text-black dark:text-gray-100 font-base text-[14px] border-r border-black/20 dark:border-gray-700 last:border-r-0">
                         {question.title}
                       </TableCell>
-                      <TableCell className="px-6 py-6 text-black dark:text-gray-100 font-medium text-[16px] border-r border-black/20 dark:border-gray-700 last:border-r-0">
+                      <TableCell className="text-center py-6 text-black dark:text-gray-100 font-base text-[14px] text-wrap border-r border-black/20 dark:border-gray-700 last:border-r-0">
                         {question.description ||
                           question.question ||
                           "No description"}
                       </TableCell>
-                      <TableCell className="px-6 py-6 text-center border-r border-black/20 last:border-r-0">
+                      <TableCell className="text-center  border-r border-black/20 last:border-r-0">
                         <span
-                          className={`inline-block px-4 py-1.5 rounded-full text-[14px] font-medium min-w-[90px] ${
+                          className={`inline-block px-4 py-1.5 rounded-full text-[14px] font-medium  ${
                             question.difficulty === "easy"
                               ? "bg-[#ECFDF5] text-[#065F46]"
                               : question.difficulty === "hard"
@@ -180,7 +181,7 @@ export default function Questions() {
                           {question.difficulty || "medium"}
                         </span>
                       </TableCell>
-                      <TableCell className="px-6 py-6 text-center border-r border-black/20 last:border-r-0">
+                      <TableCell className="  py-2 text-center border-r border-black/20 last:border-r-0">
                         <span
                           className={`inline-block px-4 py-1.5 rounded-full text-[14px] font-semibold border ${
                             question.type === "BE"
@@ -200,7 +201,7 @@ export default function Questions() {
                             title="View"
                           >
                             <Eye
-                              size={22}
+                              size={18}
                               strokeWidth={3}
                               fill="currentColor"
                               fillOpacity={0.1}
@@ -211,13 +212,13 @@ export default function Questions() {
                             className="text-[#FB7C19] cursor-pointer hover:opacity-80 transition-opacity"
                             title="Edit"
                           >
-                            <Edit size={20} strokeWidth={3} />
+                            <Edit size={18} strokeWidth={3} />
                           </button>
                           <button
                             className="text-[#FB7C19] cursor-pointer hover:opacity-80 transition-opacity"
                             title="Delete"
                           >
-                            <Trash2 size={20} strokeWidth={3} />
+                            <Trash2 size={18} strokeWidth={3} />
                           </button>
                         </div>
                       </TableCell>

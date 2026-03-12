@@ -67,7 +67,7 @@ export default function StudentQuiz() {
                     ${
                       selected[question._id] === key
                         ? "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300"
-                        : "border-gray-200 bg-white hover:border-green-300 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-green-300 dark:hover:bg-gray-700"
+                        : "border-gray-200 bg-white dark:text-white hover:border-green-300 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-green-300 dark:hover:bg-gray-700"
                     }
                   `}
                 >
@@ -78,7 +78,7 @@ export default function StudentQuiz() {
                     ${
                       selected[question._id] === key
                         ? "bg-green-500 text-white dark:bg-green-400"
-                        : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                        : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-white"
                     }
                   `}
                   >
@@ -95,7 +95,7 @@ export default function StudentQuiz() {
       <button
         onClick={handleSubmit}
         disabled={Object.keys(selected).length !== questions.length}
-        className="w-full py-3 rounded-xl bg-green-500 text-white font-semibold
+        className="w-full py-3 cursor-pointer rounded-xl bg-green-500 text-white font-semibold
           hover:bg-green-600 transition-all duration-200
           disabled:opacity-40 disabled:cursor-not-allowed
           dark:bg-green-600 dark:hover:bg-green-700"
