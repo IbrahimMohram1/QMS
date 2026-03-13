@@ -9,10 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AuthContext } from "@/Context/AuthContext";
 import useResults from "@/Hooks/useResults";
 import Loading from "@/Shared/Loading/Loading";
 import { Eye, Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Results() {
@@ -20,6 +21,7 @@ export default function Results() {
   const { getAllResults, loading, results } = useResults();
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  let { loginData } = useContext(AuthContext);
   const itemsPerPage = 10;
 
   const filtered = results.filter((result) =>
@@ -115,16 +117,18 @@ export default function Results() {
                 ) : (
                   paginatedResults.map((result) => (
                     <TableRow
-                      className="text-center  py-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                      className={`text-center py-5 ${loginData?.role === "Instructor" ? "cursor-pointer" : ""} hover:bg-gray-50 dark:hover:bg-gray-700`}
                       key={result.quiz._id}
-                      onClick={() =>
-                        navigate(`/dashboard/quiz-result-view`, {
-                          state: {
-                            quiz: result.quiz,
-                            participants: result.participants,
-                          },
-                        })
-                      }
+                      onClick={() => {
+                        if (loginData?.role === "Instructor") {
+                          navigate(`/dashboard/quiz-result-view`, {
+                            state: {
+                              quiz: result.quiz,
+                              participants: result.participants,
+                            },
+                          });
+                        }
+                      }}
                     >
                       <TableCell className="font-medium  py-5 text-black dark:text-gray-100">
                         {result.quiz.title}
@@ -169,19 +173,19 @@ export default function Results() {
 
             <div className="flex  items-center gap-4 mt-4">
               <Button
-                className="text-xs"
+                className="text-xs text-gray-600 dark:text-white"
                 onClick={handlePrevPage}
                 disabled={currentPage === 1}
               >
                 Prev
               </Button>
 
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-gray-600 dark:text-white">
                 {currentPage} / {totalPages}
               </span>
 
               <Button
-                className="text-xs"
+                className="text-xs text-gray-600 dark:text-white"
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
               >

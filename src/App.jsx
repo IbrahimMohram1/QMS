@@ -61,7 +61,11 @@ function App() {
         },
         {
           path: "groups",
-          element: <Groups />,
+          element: (
+            <ProtectedRoute allowedRoles={["Instructor"]}>
+              <Groups />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "quizes",
@@ -69,7 +73,11 @@ function App() {
         },
         {
           path: "quizes/:id",
-          element: <QuizDetails />,
+          element: (
+            <ProtectedRoute allowedRoles={["Instructor"]}>
+              <QuizDetails />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "results",
@@ -77,11 +85,19 @@ function App() {
         },
         {
           path: "students",
-          element: <Students />,
+          element: (
+            <ProtectedRoute allowedRoles={["Instructor"]}>
+              <Students />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "questions",
-          element: <Questions />,
+          element: (
+            <ProtectedRoute allowedRoles={["Instructor"]}>
+              <Questions />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "change-password",
@@ -89,7 +105,11 @@ function App() {
         },
         {
           path: "quiz-result-view",
-          element: <ResultView />,
+          element: (
+            <ProtectedRoute allowedRoles={["Instructor"]}>
+              <ResultView />
+            </ProtectedRoute>
+          ),
         },
         { path: "student-quiz", element: <StudentQuiz /> },
       ],

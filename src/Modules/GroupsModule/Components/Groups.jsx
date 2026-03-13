@@ -153,7 +153,7 @@ export default function Groups() {
                 <Check
                   size={36}
                   strokeWidth={2.5}
-                  className="text-black dark:text-white"
+                  className="text-black dark:text-white dark:hover:text-black"
                 />
               </button>
 
@@ -164,7 +164,7 @@ export default function Groups() {
                 <X
                   size={36}
                   strokeWidth={2.5}
-                  className="text-black dark:text-white"
+                  className="text-black dark:text-white dark:hover:text-black"
                 />
               </button>
             </div>
@@ -179,7 +179,7 @@ export default function Groups() {
               </div>
               <input
                 type="text"
-                className="flex-1 px-5 py-4 outline-none text-lg bg-transparent"
+                className="flex-1 px-5 py-4 outline-none text-lg bg-transparent dark:text-white"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
@@ -230,7 +230,7 @@ export default function Groups() {
                         onClick={() => toggleStudent(student._id)}
                         className="p-4 hover:bg-orange-50 dark:hover:bg-orange-900 cursor-pointer flex justify-between items-center border-b border-gray-50 dark:border-gray-700 last:border-none transition-colors"
                       >
-                        <span className="text-lg text-gray-700">
+                        <span className="text-lg text-gray-700 dark:text-white">
                           {student.first_name} {student.last_name}
                         </span>
                         {formData.students.includes(student._id) && (
@@ -297,7 +297,7 @@ export default function Groups() {
                       className="rounded-full hover:bg-blue-50 hover:text-blue-600"
                       onClick={() => openModal(group)}
                     >
-                      <FileEdit size={20} />
+                      <FileEdit className="dark:text-white" size={20} />
                     </Button>
 
                     <Button
@@ -309,7 +309,7 @@ export default function Groups() {
                         setConfirmOpen(true);
                       }}
                     >
-                      <Trash2 size={20} />
+                      <Trash2 className="text-red-500" size={20} />
                     </Button>
                   </div>
                 </div>

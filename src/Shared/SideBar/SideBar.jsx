@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   SidebarProvider,
@@ -18,6 +18,7 @@ import {
   Menu,
   LayoutDashboard,
 } from "lucide-react";
+import { AuthContext } from "@/Context/AuthContext";
 
 // Pixel-perfect Logo from Figma
 const Logo = () => (
@@ -48,6 +49,10 @@ const Logo = () => (
 
 export function CustomSidebarTrigger() {
   const { toggleSidebar } = useSidebar();
+  let { loginData } = useContext(AuthContext);
+  useEffect(() => {
+    console.log(loginData);
+  }, [loginData]);
   return (
     <button
       onClick={toggleSidebar}
@@ -59,15 +64,51 @@ export function CustomSidebarTrigger() {
 }
 
 const NAV_LINKS = [
-  { name: "Dashboard", path: "/dashboard", exact: true, icon: LayoutDashboard },
-  { name: "Groups", path: "/dashboard/groups", icon: Users },
-  { name: "Quizzes", path: "/dashboard/quizes", icon: AlarmClock },
-  { name: "Students", path: "/dashboard/students", icon: Users },
-  { name: "Questions", path: "/dashboard/questions", icon: FileText },
-  { name: "Results", path: "/dashboard/results", icon: FileText },
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    exact: true,
+    icon: LayoutDashboard,
+    roles: ["Instructor", "Student"],
+  },
+  {
+    name: "Groups",
+    path: "/dashboard/groups",
+    icon: Users,
+    roles: ["Instructor"],
+  },
+  {
+    name: "Quizzes",
+    path: "/dashboard/quizes",
+    icon: AlarmClock,
+    roles: ["Instructor", "Student"],
+  },
+  {
+    name: "Students",
+    path: "/dashboard/students",
+    icon: Users,
+    roles: ["Instructor"],
+  },
+  {
+    name: "Questions",
+    path: "/dashboard/questions",
+    icon: FileText,
+    roles: ["Instructor"],
+  },
+  {
+    name: "Results",
+    path: "/dashboard/results",
+    icon: FileText,
+    roles: ["Instructor", "Student"],
+  },
 ];
 
 export default function SideBar() {
+  const { loginData } = useContext(AuthContext);
+
+  const filteredLinks = NAV_LINKS.filter((link) =>
+    link.roles.includes(loginData?.role),
+  );
   return (
     <SidebarProvider className="w-fit">
       <Sidebar
@@ -84,7 +125,7 @@ export default function SideBar() {
         <SidebarContent className="p-0 overflow-visible">
           <SidebarGroup className="p-0">
             <SidebarMenu className="gap-0 ">
-              {NAV_LINKS.map((link) => (
+              {filteredLinks.map((link) => (
                 <SidebarMenuItem
                   key={link.name}
                   className="px-0 relative border-b border-black/20 dark:border-gray-700 "

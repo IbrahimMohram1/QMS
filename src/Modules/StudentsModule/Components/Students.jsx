@@ -271,19 +271,19 @@ export default function Students() {
             </div>
             <div>
               <Button
-                className="text-xs"
+                className="text-xs text-gray-600 dark:text-white"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => prev - 1)}
               >
                 Prev
               </Button>
 
-              <span>
+              <span className="text-gray-600 dark:text-white">
                 {currentPage} / {totalPages}
               </span>
 
               <Button
-                className="text-xs"
+                className="text-xs text-gray-600 dark:text-white"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((prev) => prev + 1)}
               >

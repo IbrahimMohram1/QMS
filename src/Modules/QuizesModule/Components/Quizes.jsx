@@ -167,17 +167,19 @@ export default function Quizes() {
           />
 
           {/* Question Bank card */}
-          <div
-            onClick={() => navigate("/dashboard/questions")}
-            className="bg-white dark:bg-gray-800 rounded-[10px] border border-black/20 dark:border-gray-700 p-6 flex flex-col items-center justify-center gap-5 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 group shadow-sm w-full min-h-[200px] sm:min-h-[240px]"
-          >
-            <div className="flex h-20 w-20 items-center justify-center rounded-[18px] border-2 border-dashed border-black/10 group-hover:border-black/30 transition-all">
-              <Vault className="h-10 w-10 text-black dark:text-gray-200 group-hover:scale-110 transition-transform duration-300" />
+          {loginData?.role === "Instructor" && (
+            <div
+              onClick={() => navigate("/dashboard/questions")}
+              className="bg-white dark:bg-gray-800 rounded-[10px] border border-black/20 dark:border-gray-700 p-6 flex flex-col items-center justify-center gap-5 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 group shadow-sm w-full min-h-[200px] sm:min-h-[240px]"
+            >
+              <div className="flex h-20 w-20 items-center justify-center rounded-[18px] border-2 border-dashed border-black/10 group-hover:border-black/30 transition-all">
+                <Vault className="h-10 w-10 text-black dark:text-gray-200 group-hover:scale-110 transition-transform duration-300" />
+              </div>
+              <span className="text-base font-extrabold text-black dark:text-gray-100 text-center leading-snug tracking-tight">
+                Question Bank
+              </span>
             </div>
-            <span className="text-base font-extrabold text-black dark:text-gray-100 text-center leading-snug tracking-tight">
-              Question Bank
-            </span>
-          </div>
+          )}
         </div>
 
         {/* Right Section: Quizzes Overview */}
