@@ -53,5 +53,23 @@ export default function useQuestions() {
     }
   };
 
-  return { getAllQuestions, data, createQuestion, updateQuestion };
+  const deleteQuestion = async (id) => {
+    try {
+      const response = await axiosClient.delete(`/api/question/${id}`);
+      console.log(`deleted question`, response);
+      getAllQuestions();
+      toast.success(response.data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  return {
+    getAllQuestions,
+    data,
+    createQuestion,
+    updateQuestion,
+    deleteQuestion,
+  };
 }

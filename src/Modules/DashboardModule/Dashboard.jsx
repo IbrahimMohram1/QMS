@@ -85,127 +85,116 @@ export default function Dashboard() {
   }, []);
   return (
     <>
-      <div className="w-11/12 mx-auto flex justify-center items-start mt-8 gap-x-5 flex-wrap gap-y-5 md:flex-nowrap ">
-        <div className="md:w-1/2 w-full border border-black/10 dark:border-gray-700 p-5 rounded-lg bg-gray-50 dark:bg-gray-900 ">
-          <h2 className="font-semibold text-base text-black dark:text-gray-100 my-3">
-            Upcoming 5 quizzes
-          </h2>
+    <div className="py-6 w-full bg-white dark:bg-[#0D1321] min-h-screen">
+      <div className="flex flex-col md:flex-row items-start gap-5">
+        
+        {/* Upcoming Quizzes Column */}
+        <div className="md:w-1/2 w-full border border-black/10 dark:border-gray-800 p-4 sm:p-5 rounded-lg bg-gray-50 dark:bg-[#111827] shadow-sm">
+        <h2 className="font-bold text-lg text-black dark:text-gray-100 mb-5 px-1">
+          Upcoming 5 quizzes
+        </h2>
 
-          {loadingQuizes ? (
-            <div>
-              <Loading />
-            </div>
-          ) : (
-            <>
-              <div className="flex flex-col gap-y-2 ">
-                {allQuizzes.map((quiz, index) => (
-                  <Link key={quiz._id} to={`/dashboard/quizes/${quiz._id}`}>
-                    <Card
-                      id={`student-${quiz._id}`}
-                      className="w-full  rounded-lg px-5 py-0  border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
-                    >
-                      <div className="flex items-center justify-between     ">
-                        <div className="flex items-center gap-y-4 ">
-                          <div className="flex flex-col justify-center gap-y-1  ">
-                            <CardTitle className="mt-2 dark:text-white text-[14px]">
-                              {quiz.title}
-                            </CardTitle>
-                            <CardDescription className="">
-                              <div className="flex  flex-col  text-sm text-gray-500 dark:text-gray-400 gap-y-1">
-                                <span className="flex gap-x-2  ">
-                                  <CalendarDays size={14} />{" "}
-                                  <span className="font-semibold">
-                                    {" "}
-                                    Scheduled :
-                                  </span>{" "}
-                                  {quiz.schadule}
-                                </span>
-                                <span className="flex gap-x-2  ">
-                                  <Lock size={16} />{" "}
-                                  <span className="font-semibold"> Code:</span>{" "}
-                                  {quiz.code}
-                                </span>
-                              </div>
-                            </CardDescription>
-                          </div>
-                        </div>
-                        <span
-                          className={`px-3 py-1 text-base font-semibold rounded-full ${
-                            quiz.status === "open"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
-                        >
-                          {quiz.status}
+        {loadingQuizes ? (
+          <Loading height="h-64" />
+        ) : (
+          <div className="flex flex-col gap-3">
+            {allQuizzes.map((quiz) => (
+              <Link key={quiz._id} to={`/dashboard/quizes/${quiz._id}`}>
+                <Card
+                  className="w-full rounded-lg px-4 py-4 sm:h-24 sm:py-0 border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#1A1D23] hover:bg-gray-50 dark:hover:bg-[#252A33] transition-all flex items-center"
+                >
+                  <div className="flex items-center justify-between w-full gap-3">
+                    <div className="flex flex-col justify-center gap-1 flex-1 min-w-0">
+                      <CardTitle className="dark:text-white text-[15px] font-bold truncate">
+                        {quiz.title}
+                      </CardTitle>
+                      <div className="flex flex-col text-[13px] text-gray-500 dark:text-gray-400 gap-1">
+                        <span className="flex items-center gap-2">
+                          <CalendarDays size={14} className="shrink-0" />
+                          <span className="font-semibold">Scheduled:</span>
+                          <span className="truncate">{quiz.schadule}</span>
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <Lock size={14} className="shrink-0" />
+                          <span className="font-semibold">Code:</span>
+                          <span className="font-mono">{quiz.code}</span>
                         </span>
                       </div>
-                    </Card>
-                  </Link>
-                ))}
-                <div className="mt-3">
-                  <Link
-                    to={"/dashboard/quizes"}
-                    className="flex gap-x-2 items-center text-green-500 "
-                  >
-                    <span className="text-base  ">View Quiz directory</span>
-                    <MoveRight />
-                  </Link>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="md:w-1/2 w-full border border-black/10 dark:border-gray-700 p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ">
-          <div className="flex justify-between items-center p-4">
-            <h2 className="font-semibold text-lg text-black dark:text-gray-100">
-              Top 5 Students
-            </h2>
-            <Link className="font-medium flex items-center text-black dark:text-gray-100">
-              All Students
-              <ArrowRight size={18} className="text-green-500" />
-            </Link>
-          </div>
-          <div className="flex flex-col gap-y-3">
-            {currentStudents.map((student, index) => (
-              <Card
-                key={student._id}
-                id={`student-${student._id}`}
-                className="w-full  rounded-lg px-5 py-2 h-20 border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                    </div>
+                    <span
+                      className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shrink-0 ${
+                        quiz.status === "open"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {quiz.status}
+                    </span>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+            <div className="mt-4 px-1">
+              <Link
+                to={"/dashboard/quizes"}
+                className="flex gap-x-2 items-center text-green-600 font-bold hover:underline"
               >
-                <div className="flex items-center justify-between h-full   ">
-                  <div className="flex items-center gap-4 h-full">
-                    <img
-                      src={studentImages[index % studentImages.length]}
-                      alt="avatar"
-                      className="h-full aspect-square object-cover rounded-full"
-                    />
+                <span className="text-sm">View Quiz directory</span>
+                <MoveRight size={18} />
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
 
-                    <div className="flex flex-col justify-center gap-y-2  ">
-                      <CardTitle className="mt-2 dark:text-white">
-                        {student.first_name} {student.last_name}
-                      </CardTitle>
-                      <CardDescription className="">
-                        <div className="flex items-center  text-sm text-gray-500 dark:text-gray-400">
-                          <span className="">
-                            Class rank: grouup | Average score: 20%
-                          </span>
-                        </div>
-                      </CardDescription>
+      {/* Top Students Column */}
+      <div className="md:w-1/2 w-full border border-black/10 dark:border-gray-800 p-4 sm:p-5 rounded-lg bg-gray-50 dark:bg-[#111827] shadow-sm">
+        <div className="flex justify-between items-center mb-6 px-1">
+          <h2 className="font-bold text-lg text-black dark:text-gray-100">
+            Top 5 Students
+          </h2>
+          <Link to="/dashboard/students" className="font-bold text-sm flex items-center text-green-600 hover:underline">
+            All Students
+            <ArrowRight size={16} className="ml-1" />
+          </Link>
+        </div>
+        
+        <div className="flex flex-col gap-3">
+          {currentStudents.map((student, index) => (
+            <Card
+              key={student._id}
+              className="w-full rounded-lg px-4 py-3 sm:px-5 sm:h-20 border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#1A1D23] hover:bg-gray-50 dark:hover:bg-[#252A33] transition-all flex items-center shadow-sm"
+            >
+              <div className="flex items-center justify-between w-full h-full">
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  <img
+                    src={studentImages[index % studentImages.length]}
+                    alt="avatar"
+                    className="w-12 h-12 sm:w-14 sm:h-14 aspect-square object-cover rounded-full border border-gray-200 dark:border-gray-700"
+                  />
+
+                  <div className="flex flex-col justify-center gap-0.5 flex-1 min-w-0">
+                    <CardTitle className="dark:text-white text-base font-bold truncate">
+                      {student.first_name} {student.last_name}
+                    </CardTitle>
+                    <div className="text-[12px] text-gray-500 dark:text-gray-400 font-medium truncate">
+                      Class rank: group | Average score: 20%
                     </div>
                   </div>
-                  <div>
-                    <ArrowRight
-                      size={22}
-                      className="text-gray-400 dark:text-gray-300"
-                    />
-                  </div>
                 </div>
-              </Card>
-            ))}
-          </div>
+                <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-full shrink-0 ml-2">
+                  <ArrowRight
+                    size={18}
+                    className="text-gray-400 dark:text-gray-300"
+                  />
+                </div>
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
-    </>
-  );
+    </div>
+  </div>
+</>
+);
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useQuestions from "@/Hooks/useQuestions";
+import DeleteConfirmation from "@/Shared/DeleteConfirmation/DeleteConfirmation";
+import Pagination from "@/Shared/Pagination/Pagination";
 
 import {
   Table,
@@ -10,34 +12,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select as ShadcnSelect,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSeparator,
-  FieldSet,
-} from "@/components/ui/field";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Eye, Edit, Trash2, Plus, Check, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 
@@ -47,9 +25,15 @@ export default function Questions() {
     data: questions,
     createQuestion,
     updateQuestion,
+    deleteQuestion,
   } = useQuestions();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const {
     register,
@@ -73,22 +57,18 @@ export default function Questions() {
 
   const handleEditDialog = (question) => {
     setSelectedQuestion(question);
-    reset(question);
+    reset({
+      ...question,
+      options: question.options || { A: "", B: "", C: "", D: "" },
+    });
     setOpenDialog(true);
   };
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
-
     const questionData = {
       title: data.title,
       description: data.description,
-      options: {
-        A: data.options.A,
-        B: data.options.B,
-        C: data.options.C,
-        D: data.options.D,
-      },
+      options: data.options,
       answer: data.answer,
       difficulty: data.difficulty,
       type: data.type,
@@ -107,32 +87,48 @@ export default function Questions() {
     getAllQuestions();
   }, []);
 
+  // Pagination logic
+  const totalPages = Math.ceil((questions?.length || 0) / itemsPerPage);
+  const paginatedQuestions =
+    questions?.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage,
+    ) || [];
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
   return (
-    <div className="py-6 w-full bg-white dark:bg-gray-900 min-h-screen">
-      <div className=" border border-black/20 dark:border-gray-700 rounded-[10px] shadow-sm overflow-hidden">
+    <div className="py-6 w-full bg-white dark:bg-[#0D1321] min-h-screen">
+      <div className=" border border-black/20 dark:border-gray-800 rounded-[10px] shadow-sm overflow-hidden">
         {/* Header Section */}
-        <div className="px-6 py-4 flex justify-between items-center bg-white dark:bg-gray-800 border-b border-black/20 dark:border-gray-700">
+        <div className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#111827] border-b border-black/20 dark:border-gray-800 gap-4">
           <h2 className="text-xl font-bold text-black dark:text-gray-100">
             Bank of Questions
           </h2>
           <Button
             onClick={handleAddDialog}
-            className="bg-white dark:bg-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 text-[#1F2937] border border-black/20 dark:border-gray-600 rounded-[30px]  py-5 flex items-center gap-2 shadow-md font-bold transition-all"
+            className="w-full sm:w-auto bg-white dark:bg-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 text-[#1F2937] border border-black/20 dark:border-gray-600 rounded-[30px] py-6 sm:py-5 flex items-center justify-center gap-2 shadow-md font-bold transition-all"
           >
             <Plus
               size={18}
-              className="bg-black text-white rounded-full p-1 size-5"
+              className="bg-black text-white rounded-full p-1 size-6 sm:size-5"
               strokeWidth={3}
             />
-            <span className="text-base">Add Question</span>
+            <span className="text-lg sm:text-base">Add Question</span>
           </Button>
         </div>
 
         {/* Table Content */}
-        <div className="px-6 py-6 ">
-          <div className="border border-black/20 dark:border-gray-700 shadow-sm rounded-[10px] overflow-hidden">
-            <Table>
-              <TableHeader className="bg-[#0D1321] text-white ">
+        <div className="px-4 sm:px-6 py-6 bg-white dark:bg-[#111827]">
+          <div className="border border-black/20 dark:border-gray-800 shadow-sm rounded-[10px] overflow-hidden overflow-x-auto">
+            <Table className="min-w-[800px] w-full">
+              <TableHeader className="bg-[#0D1321] dark:bg-black text-white ">
                 <TableRow className="hover:bg-transparent border-none">
                   <TableHead className="text-white font-bold uppercase text-center text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0">
                     TITLE
@@ -146,42 +142,40 @@ export default function Questions() {
                   <TableHead className="text-white font-bold uppercase  text-[14px] tracking-wider border-r border-gray-800 dark:border-gray-700 last:border-r-0 text-center">
                     TYPE
                   </TableHead>
-                  <TableHead className="text-white font-bold uppercase text-center text-[14px] tracking-wider text">
+                  <TableHead className="text-white font-bold uppercase text-center text-[14px] tracking-wider">
                     ACTIONS
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {questions?.length > 0 ? (
-                  questions.map((question, index) => (
+                {paginatedQuestions.length > 0 ? (
+                  paginatedQuestions.map((question, index) => (
                     <TableRow
                       key={question._id || index}
-                      className="border-b border-black/20 last:border-0 hover:bg-gray-50/40"
+                      className="border-b border-black/20 dark:border-gray-800 last:border-0 hover:bg-gray-50/40 dark:hover:bg-[#1A1D23]"
                     >
-                      <TableCell className="text-center py-6  text-black dark:text-gray-100 font-base text-[14px] border-r border-black/20 dark:border-gray-700 last:border-r-0">
+                      <TableCell className="text-center py-6  text-black dark:text-gray-100 font-base text-[14px] border-r border-black/20 dark:border-gray-800 last:border-r-0">
                         {question.title}
                       </TableCell>
-                      <TableCell className="text-center py-6 text-black dark:text-gray-100 font-base text-[14px] text-wrap border-r border-black/20 dark:border-gray-700 last:border-r-0">
+                      <TableCell className="text-center py-6 text-black dark:text-gray-100 font-base text-[14px] text-wrap border-r border-black/20 dark:border-gray-800 last:border-r-0">
                         {question.description ||
                           question.question ||
                           "No description"}
                       </TableCell>
-                      <TableCell className="text-center  border-r border-black/20 last:border-r-0">
+                      <TableCell className="text-center  border-r border-black/20 dark:border-gray-800 last:border-r-0">
                         <span
                           className={`inline-block px-4 py-1.5 rounded-full text-[14px] font-medium  ${
                             question.difficulty === "easy"
                               ? "bg-[#ECFDF5] text-[#065F46]"
                               : question.difficulty === "hard"
                                 ? "bg-[#FFF1F2] text-[#9F1239]"
-                                : question.difficulty === "medium"
-                                  ? "bg-[#FFFBEB] text-[#92400E]"
-                                  : "bg-[#F3F4F6] text-[#4B5563]"
+                                : "bg-[#FFFBEB] text-[#92400E]"
                           }`}
                         >
                           {question.difficulty || "medium"}
                         </span>
                       </TableCell>
-                      <TableCell className="  py-2 text-center border-r border-black/20 last:border-r-0">
+                      <TableCell className="  py-2 text-center border-r border-black/20 dark:border-gray-800 last:border-r-0">
                         <span
                           className={`inline-block px-4 py-1.5 rounded-full text-[14px] font-semibold border ${
                             question.type === "BE"
@@ -194,18 +188,13 @@ export default function Questions() {
                           {question.type || "FE"}
                         </span>
                       </TableCell>
-                      <TableCell className="px-6 py-6">
+                      <TableCell className="px-6 py-6 border-r border-black/20 dark:border-gray-800 last:border-r-0">
                         <div className="flex items-center justify-center gap-5">
                           <button
                             className="text-[#FB7C19] cursor-pointer hover:opacity-80 transition-opacity"
                             title="View"
                           >
-                            <Eye
-                              size={18}
-                              strokeWidth={3}
-                              fill="currentColor"
-                              fillOpacity={0.1}
-                            />
+                            <Eye size={18} strokeWidth={3} fillOpacity={0.1} />
                           </button>
                           <button
                             onClick={() => handleEditDialog(question)}
@@ -215,6 +204,10 @@ export default function Questions() {
                             <Edit size={18} strokeWidth={3} />
                           </button>
                           <button
+                            onClick={() => {
+                              setSelectedQuestion(question);
+                              setOpenDeleteModal(true);
+                            }}
                             className="text-[#FB7C19] cursor-pointer hover:opacity-80 transition-opacity"
                             title="Delete"
                           >
@@ -237,9 +230,16 @@ export default function Questions() {
               </TableBody>
             </Table>
           </div>
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
 
-        {/* ================Add Question Modal ================ */}
+        {/* ================Add/Edit Question Modal ================ */}
         <Dialog
           open={openDialog}
           onOpenChange={(open) => {
@@ -247,167 +247,159 @@ export default function Questions() {
             if (!open) setSelectedQuestion(null);
           }}
         >
-          <DialogContent className="max-w-6xl! w-[95vw]! p-0 overflow-hidden border-none rounded-[15px] bg-white dark:bg-gray-800 shadow-2xl [&>button]:hidden">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              {/* Header Section with Actions */}
-              <div className="flex justify-between items-center px-12 py-0 border-b border-black/10 dark:border-gray-700 min-h-[90px] bg-white dark:bg-gray-800">
-                <DialogTitle className="text-3xl font-extrabold text-black dark:text-gray-100 font-sans tracking-tight">
+          <DialogContent className="max-w-5xl! w-[95vw]! p-0 border border-black/15 dark:border-gray-700 rounded-[12px] bg-white dark:bg-[#111827] shadow-2xl [&>button]:hidden max-h-[90vh] flex flex-col overflow-hidden">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col flex-1 overflow-hidden min-h-0"
+            >
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row justify-between items-center px-6 sm:px-8 py-4 sm:py-0 border-b border-black/10 dark:border-gray-800 min-h-[70px] bg-white dark:bg-[#111827] gap-3 sm:gap-0 shrink-0">
+                <DialogTitle className="text-lg sm:text-xl font-bold text-black dark:text-gray-100 font-sans text-center sm:text-left">
                   {selectedQuestion
                     ? "Update question"
                     : "Set up a new question"}
                 </DialogTitle>
-                <div className="flex border-l border-black/10 h-[90px] items-center">
+                <div className="flex border-t sm:border-t-0 sm:border-l border-black/10 h-auto sm:h-[70px] items-center w-full sm:w-auto justify-center">
                   <button
                     type="submit"
-                    className="px-14 h-full hover:bg-green-50 transition-colors cursor-pointer border-r border-black/10 flex items-center justify-center group"
+                    className="px-8 py-3 sm:py-0 h-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer border-r border-black/10 flex items-center justify-center flex-1 sm:flex-none"
                   >
                     <Check
-                      size={38}
-                      strokeWidth={3}
-                      className="text-black group-hover:text-green-600 transition-colors"
+                      size={26}
+                      strokeWidth={2.5}
+                      className="text-black dark:text-gray-200"
                     />
                   </button>
                   <button
                     type="button"
                     onClick={() => setOpenDialog(false)}
-                    className="px-14 h-full hover:bg-red-50 transition-colors cursor-pointer flex items-center justify-center group"
+                    className="px-8 py-3 sm:py-0 h-full hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer flex items-center justify-center flex-1 sm:flex-none"
                   >
                     <X
-                      size={38}
-                      strokeWidth={3}
-                      className="text-black group-hover:text-red-600 transition-colors"
+                      size={26}
+                      strokeWidth={2.5}
+                      className="text-black dark:text-gray-200"
                     />
                   </button>
                 </div>
               </div>
 
-              <FieldGroup className="p-10 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-6 bg-[#FB7C19] rounded-full"></div>
-                  <h3 className="text-xl font-bold text-black dark:text-gray-100 border-transparent">
-                    Details
-                  </h3>
+              {/* Body */}
+              <div className="flex-1 overflow-y-auto min-h-0 p-8 space-y-4 sm:space-y-3">
+                <p className="font-semibold text-black/70 dark:text-gray-300 text-sm mb-2">
+                  Details
+                </p>
+
+                {/* Title */}
+                <div className="flex flex-col sm:flex-row items-stretch border border-[#0000004D] dark:border-gray-800 rounded-[10px] overflow-hidden bg-white dark:bg-[#111827] shadow-sm">
+                  <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-3 sm:py-0 sm:h-12 sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-base sm:text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-gray-600 shrink-0">
+                    Title:
+                  </span>
+                  <Input
+                    {...register("title", { required: true })}
+                    className="flex-1 h-20 sm:h-12 border-none shadow-none text-black dark:text-gray-100 font-bold text-base sm:text-sm bg-transparent placeholder:text-gray-300 placeholder:text-base sm:placeholder:text-sm rounded-none focus-visible:ring-0 px-6 sm:px-4"
+                    placeholder="Enter question title..."
+                  />
                 </div>
 
-                {/* Title Field - More compact */}
-                <Field
-                  orientation="horizontal"
-                  className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
-                >
-                  <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[100px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
-                    Title:
-                  </FieldLabel>
-                  <Input
-                    {...register("title")}
-                    className="flex-1 px-6 h-full border-none shadow-none text-black font-semibold text-lg focus-visible:ring-0 placeholder:text-gray-300 rounded-none bg-transparent"
-                    placeholder="Enter the question title..."
-                  />
-                </Field>
-
-                {/* Description Field - Adjusted height and move Difficulty after it */}
-                <Field
-                  orientation="horizontal"
-                  className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden min-h-[100px] bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
-                >
-                  <FieldLabel className="bg-[#FFF1E7] px-5 py-4 flex items-start max-w-[120px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
+                {/* Description */}
+                <div className="flex flex-col sm:flex-row items-stretch border border-[#0000004D] dark:border-gray-600 rounded-[10px] overflow-hidden bg-white dark:bg-gray-700 shadow-sm">
+                  <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-3 sm:py-0 sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-base sm:text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-gray-600 shrink-0">
                     Description
-                  </FieldLabel>
+                  </span>
                   <Textarea
                     {...register("description")}
-                    className="flex-1 px-6 py-4 border-none shadow-none text-black font-medium text-lg focus-visible:ring-0 resize-none min-h-[100px] placeholder:text-gray-300 rounded-none bg-transparent"
-                    placeholder="Provide more context or the question itself..."
+                    rows={4}
+                    className="flex-1 px-6 sm:px-4 py-5 sm:py-3 border-none shadow-none text-black dark:text-gray-200 font-bold text-base sm:text-sm bg-transparent resize-none placeholder:text-gray-300 placeholder:text-base sm:placeholder:text-sm leading-relaxed rounded-none focus-visible:ring-0 min-h-[140px] sm:min-h-[80px]"
+                    placeholder="Provide details about this question..."
                   />
-                </Field>
+                </div>
 
-                {/* Difficulty Field - Moved here */}
-                <div className="grid grid-cols-2 gap-x-10">
-                  <Field
-                    orientation="horizontal"
-                    className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
-                  >
-                    <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[180px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
+                {/* Difficulty | Right Answer | Category */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="flex flex-col sm:flex-row items-stretch border border-[#0000004D] dark:border-gray-600 rounded-[10px] overflow-hidden bg-white dark:bg-gray-700 shadow-sm">
+                    <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-3 sm:py-0 sm:h-12 sm:w-32 flex items-center font-bold text-black dark:text-gray-100 text-base sm:text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-gray-600 shrink-0 whitespace-nowrap">
                       Difficulty
-                    </FieldLabel>
+                    </span>
                     <select
                       {...register("difficulty")}
-                      className="flex-1 px-6 h-full border-none bg-transparent text-black font-bold text-lg outline-none cursor-pointer focus:ring-0"
+                      className="flex-1 px-6 sm:px-4 h-20 sm:h-12 border-none bg-transparent text-black dark:text-gray-100 font-bold text-base sm:text-sm outline-none cursor-pointer"
                     >
-                      <option value="" disabled selected>
-                        Select Difficulty
-                      </option>
                       <option value="easy">Easy</option>
                       <option value="medium">Medium</option>
                       <option value="hard">Hard</option>
                     </select>
-                  </Field>
-                </div>
+                  </div>
 
-                {/* Options Grid - Denser layout */}
-                <div className="grid grid-cols-2 gap-x-10 gap-y-3">
-                  {["A", "B", "C", "D"].map((opt) => (
-                    <Field
-                      key={opt}
-                      orientation="horizontal"
-                      className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
-                    >
-                      <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[50px] justify-center font-bold text-black border-r border-black/10 italic text-xl h-full rounded-none">
-                        {opt}
-                      </FieldLabel>
-                      <Input
-                        {...register(`options.${opt}`)}
-                        className="flex-1 px-6 h-full border-none shadow-none text-black font-semibold text-lg focus-visible:ring-0 rounded-none bg-transparent"
-                      />
-                    </Field>
-                  ))}
-                </div>
-
-                {/* Selects Row - Compact yet wide */}
-                <div className="grid grid-cols-2 gap-x-10 pt-1">
-                  <Field
-                    orientation="horizontal"
-                    className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
-                  >
-                    <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[180px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
+                  <div className="flex flex-col sm:flex-row items-stretch border border-[#0000004D] dark:border-gray-600 rounded-[10px] overflow-hidden bg-white dark:bg-gray-700 shadow-sm">
+                    <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-3 sm:py-0 sm:h-12 sm:w-32 flex items-center font-bold text-black dark:text-gray-100 text-base sm:text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-gray-600 shrink-0 whitespace-nowrap">
                       Right Answer
-                    </FieldLabel>
+                    </span>
                     <select
-                      {...register("answer")}
-                      className="flex-1 px-6 h-full border-none bg-transparent text-black font-bold text-lg outline-none cursor-pointer focus:ring-0"
+                      {...register("answer", { required: true })}
+                      className="flex-1 px-6 sm:px-4 h-20 sm:h-12 border-none bg-transparent text-black dark:text-gray-100 font-bold text-lg sm:text-sm outline-none cursor-pointer"
                     >
-                      <option value="" disabled selected>
-                        Select Option
+                      <option value="" disabled>
+                        Select
                       </option>
                       <option value="A">A</option>
                       <option value="B">B</option>
                       <option value="C">C</option>
                       <option value="D">D</option>
                     </select>
-                  </Field>
+                  </div>
 
-                  <Field
-                    orientation="horizontal"
-                    className="border border-black/15 dark:border-gray-600 rounded-[10px] overflow-hidden h-11 bg-white dark:bg-gray-700 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all gap-0"
-                  >
-                    <FieldLabel className="bg-[#FFF1E7] px-5 flex items-center max-w-[180px] font-bold text-black border-r border-black/10 italic text-lg h-full rounded-none">
-                      Category type
-                    </FieldLabel>
+                  <div className="flex flex-col sm:flex-row items-stretch border border-[#0000004D] dark:border-gray-600 rounded-[10px] overflow-hidden bg-white dark:bg-gray-700 shadow-sm">
+                    <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-3 sm:py-0 sm:h-12 sm:w-32 flex items-center font-bold text-black dark:text-gray-100 text-base sm:text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-gray-600 shrink-0 whitespace-nowrap">
+                      Category
+                    </span>
                     <select
                       {...register("type")}
-                      className="flex-1 px-6 h-full border-none bg-transparent text-black font-bold text-lg outline-none cursor-pointer focus:ring-0"
+                      className="flex-1 px-6 sm:px-4 h-20 sm:h-12 border-none bg-transparent text-black dark:text-gray-100 font-bold text-lg sm:text-sm outline-none cursor-pointer"
                     >
-                      <option value="" disabled selected>
-                        Select Type
-                      </option>
                       <option value="FE">FE</option>
                       <option value="BE">BE</option>
                       <option value="DO">DO</option>
                     </select>
-                  </Field>
+                  </div>
                 </div>
-              </FieldGroup>
+
+                {/* Options A, B, C, D */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {["A", "B", "C", "D"].map((opt) => (
+                    <div
+                      key={opt}
+                      className="flex flex-col sm:flex-row items-stretch border border-[#0000004D] dark:border-gray-600 rounded-[10px] overflow-hidden bg-white dark:bg-gray-700 shadow-sm"
+                    >
+                      <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-3 sm:py-0 sm:h-12 sm:w-16 flex items-center font-bold text-black dark:text-gray-100 text-base sm:text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-gray-600 shrink-0 w-full justify-center">
+                        {opt}
+                      </span>
+                      <Input
+                        {...register(`options.${opt}`, { required: true })}
+                        className="flex-1 h-20 sm:h-12 border-none shadow-none text-black dark:text-gray-100 font-bold text-base sm:text-sm bg-transparent placeholder:text-gray-300 placeholder:text-base sm:placeholder:text-sm rounded-none focus-visible:ring-0 px-6 sm:px-4"
+                        placeholder={`Option ${opt}`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </form>
           </DialogContent>
         </Dialog>
+
+        <DeleteConfirmation
+          open={openDeleteModal}
+          onOpenChange={setOpenDeleteModal}
+          onConfirm={() => {
+            if (selectedQuestion?._id) {
+              deleteQuestion(selectedQuestion._id);
+              setOpenDeleteModal(false);
+              setSelectedQuestion(null);
+            }
+          }}
+          title="Delete this question?"
+          description="Are you sure you want to delete this question? This action cannot be undone."
+        />
       </div>
     </div>
   );

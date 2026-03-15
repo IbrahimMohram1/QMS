@@ -1,13 +1,8 @@
 import React, { useContext } from "react";
-import {
-  ChevronDown,
-  AlarmClockPlus,
-  Mail,
-  Bell,
-  LogOut,
-} from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { ChevronDown, AlarmClockPlus, Mail, Bell, LogOut, Menu } from "lucide-react";
+import { NavLink, useLocation, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
+import { useSidebar } from "@/components/ui/sidebar";
 import useAuth from "@/Hooks/useAuth";
 
 import {
@@ -26,8 +21,10 @@ import ToggleTheme from "../ToggleTheme/ToggleTheme";
 export default function NavBar() {
   const { userProfile } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
   let { logout } = useAuth();
   let { darkMode } = useContext(ThemeContext);
+  const { toggleSidebar } = useSidebar();
 
   // Get title from path
   const getPageTitle = () => {
@@ -45,10 +42,15 @@ export default function NavBar() {
   };
 
   return (
-    <header className="flex py-3 items-center justify-between bg-white dark:bg-gray-900 px-4 md:px-8 border-b border-black/10 dark:border-gray-700">
-
-      {/* Page Title */}
-      <div className="flex items-center">
+    <header className="flex py-3 items-center justify-between bg-white dark:bg-[#0D1321] px-4 md:px-8 border-b border-black/10 dark:border-gray-800">
+      {/* Page Title & Mobile Toggle */}
+      <div className="flex items-center gap-2">
+        <button 
+          onClick={toggleSidebar}
+          className="md:hidden p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
+        >
+          <Menu className="w-6 h-6 dark:text-white" />
+        </button>
         <h1 className="text-lg md:text-xl font-bold text-black dark:text-gray-100 tracking-tight">
           {getPageTitle()}
         </h1>
@@ -56,7 +58,6 @@ export default function NavBar() {
 
       {/* Right Section */}
       <div className="flex items-center h-full">
-
         {/* Toggle Theme */}
         <div className="px-2 md:px-4">
           <ToggleTheme />
@@ -64,8 +65,9 @@ export default function NavBar() {
 
         {/* New Quiz */}
         <div className="px-2 md:px-6 flex items-center h-full border-l border-black/10 dark:border-gray-600">
-          <button
-            className="flex items-center gap-2 rounded-full border border-black/20 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 md:px-5 py-2 text-[14px] font-bold hover:bg-gray-50 dark:hover:bg-gray-600 transition-all active:scale-95"
+          <Link
+            to="/dashboard/quizes"
+            className="flex items-center gap-2 rounded-full border border-black/20 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 md:px-5 py-2 text-[14px] font-bold hover:bg-gray-50 dark:hover:bg-gray-600 transition-all active:scale-95 cursor-pointer"
             id="new-quiz-btn"
           >
             <div className="flex items-center justify-center rounded-full bg-[#FFF2EB] dark:bg-gray-600 text-[#E37A49] dark:text-gray-200">
@@ -76,7 +78,7 @@ export default function NavBar() {
             <span className="hidden md:block text-black dark:text-gray-100">
               New quiz
             </span>
-          </button>
+          </Link>
         </div>
 
         {/* Mail */}
@@ -110,12 +112,10 @@ export default function NavBar() {
         {/* User Profile */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-
             <div
               className="px-2 md:px-6 flex items-center gap-2 md:gap-4 cursor-pointer group h-full border-l border-black/10 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               id="user-profile-menu"
             >
-
               {/* Hidden on mobile */}
               <div className="hidden md:flex flex-col items-start">
                 <span className="text-sm font-semibold text-black dark:text-gray-100">
@@ -130,13 +130,10 @@ export default function NavBar() {
               </div>
 
               <ChevronDown className="h-5 w-5 text-black/30 dark:text-gray-400" />
-
             </div>
-
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="w-48 bg-white dark:bg-gray-800 shadow-lg border border-gray-100 dark:border-gray-700 rounded-xl p-1">
-
             <DropdownMenuLabel className="text-xs text-gray-400 dark:text-gray-500 font-medium px-2">
               Actions
             </DropdownMenuLabel>
@@ -144,9 +141,7 @@ export default function NavBar() {
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-
               <DropdownMenuItem className="flex items-center text-xs gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium text-gray-700 dark:text-gray-200">
-
                 <NavLink
                   to="/dashboard/change-password"
                   className="flex items-center gap-2 w-full"
@@ -155,11 +150,8 @@ export default function NavBar() {
                     size={16}
                     className="text-gray-500 dark:text-gray-400"
                   />
-
                   Change Password
-
                 </NavLink>
-
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
@@ -171,15 +163,10 @@ export default function NavBar() {
                 <LogOut size={16} />
                 LogOut
               </DropdownMenuItem>
-
             </DropdownMenuGroup>
-
           </DropdownMenuContent>
-
         </DropdownMenu>
-
       </div>
-
     </header>
   );
 }

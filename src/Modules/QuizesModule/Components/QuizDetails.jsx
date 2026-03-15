@@ -180,7 +180,7 @@ export default function QuizDetails() {
             <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-black/20 dark:border-gray-700 shrink-0">
               Duration
             </span>
-            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
+            <span className="flex-1 px-4 py-3 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
               {quiz.duration} minutes
             </span>
           </div>
@@ -190,7 +190,7 @@ export default function QuizDetails() {
             <span className="bg-[#FFEDDF] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black text-sm border-b sm:border-b-0 sm:border-r border-black/20 shrink-0">
               Quiz Code
             </span>
-            <div className="flex-1 px-4 py-2 sm:py-0 flex items-center justify-between">
+            <div className="flex-1 px-4 py-3 sm:py-0 flex items-center justify-between">
               <span className="font-black text-black dark:text-gray-100 text-sm tracking-widest">
                 {quiz.code}
               </span>
@@ -208,21 +208,21 @@ export default function QuizDetails() {
           </div>
 
           {/* Number of questions */}
-          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 dark:border-gray-700 rounded=[8px] overflow-hidden min-h-[44px]">
+          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 dark:border-gray-700 rounded-[8px] overflow-hidden min-h-[44px]">
             <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-black/20 dark:border-gray-700 shrink-0">
               Number of questions
             </span>
-            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
+            <span className="flex-1 px-4 py-3 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
               {quiz.questions_number}
             </span>
           </div>
 
           {/* Score per question */}
-          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 dark:border-gray-700 rounded=[8px] overflow-hidden min-h-[44px]">
+          <div className="flex flex-col sm:flex-row sm:items-stretch border border-black/20 dark:border-gray-700 rounded-[8px] overflow-hidden min-h-[44px]">
             <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-4 py-2 sm:py-0 w-full sm:w-44 flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-black/20 dark:border-gray-700 shrink-0">
               Score per question
             </span>
-            <span className="flex-1 px-4 py-2 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
+            <span className="flex-1 px-4 py-3 sm:py-0 flex items-center font-bold text-black dark:text-gray-200 text-sm">
               {quiz.score_per_question}
             </span>
           </div>
@@ -359,8 +359,8 @@ export default function QuizDetails() {
 
             {/* Modal Body */}
             <div className="px-8 py-6 space-y-4">
-              <div className="flex items-center border border-[#0000004D] dark:border-[#777] rounded-[10px] overflow-hidden h-12 bg-white dark:bg-gray-700">
-                <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 h-full flex items-center font-bold text-black dark:text-gray-100 text-sm border-r border-[#0000004D] dark:border-[#777] shrink-0 whitespace-nowrap min-w-[120px]">
+              <div className="flex flex-col sm:flex-row sm:items-stretch border border-[#0000004D] dark:border-[#777] rounded-[10px] overflow-hidden bg-white dark:bg-gray-700">
+                <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-2 sm:py-0 h-auto sm:h-full flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-[#777] shrink-0 whitespace-nowrap min-w-0 sm:min-w-[120px]">
                   Quiz Title
                 </span>
                 <input
@@ -369,13 +369,13 @@ export default function QuizDetails() {
                   onChange={(e) =>
                     setEditData({ ...editData, title: e.target.value })
                   }
-                  className="flex-1 px-5 h-full border-none outline-none text-black font-bold text-sm bg-transparent placeholder:text-gray-300"
+                  className="flex-1 px-5 h-12 sm:h-full border-none outline-none text-black font-bold text-sm bg-transparent placeholder:text-gray-300"
                   placeholder="Enter quiz title..."
                 />
               </div>
 
-              <div className="flex items-center border border-[#0000004D] dark:border-[#777] rounded-[10px] overflow-hidden h-12 bg-white dark:bg-gray-700">
-                <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 h-full flex items-center font-bold text-black dark:text-gray-100 text-sm border-r border-[#0000004D] dark:border-[#777] shrink-0 whitespace-nowrap min-w-[120px]">
+              <div className="flex flex-col sm:flex-row sm:items-stretch border border-[#0000004D] dark:border-[#777] rounded-[10px] overflow-hidden bg-white dark:bg-gray-700">
+                <span className="bg-[#FFEDDF] dark:bg-[#3C2A1A] px-5 py-2 sm:py-0 h-auto sm:h-full flex items-center font-bold text-black dark:text-gray-100 text-sm border-b sm:border-b-0 sm:border-r border-[#0000004D] dark:border-[#777] shrink-0 whitespace-nowrap min-w-0 sm:min-w-[120px]">
                   Schedule
                 </span>
                 <input
@@ -384,13 +384,13 @@ export default function QuizDetails() {
                   onChange={(e) =>
                     setEditData({ ...editData, schadule: e.target.value })
                   }
-                  className="flex-1 px-5 h-full border-none outline-none text-black font-bold text-sm bg-transparent placeholder:text-gray-300"
+                  className="flex-1 px-5 h-12 sm:h-full border-none outline-none text-black font-bold text-sm bg-transparent placeholder:text-gray-300"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center border border-[#0000004D] rounded-[10px] overflow-hidden h-12 bg-white">
-                  <span className="bg-[#FFEDDF] px-3 h-full flex items-center font-bold text-black text-[12px] border-r border-[#0000004D] shrink-0 whitespace-nowrap">
+                <div className="flex flex-col sm:flex-row sm:items-stretch border border-[#0000004D] rounded-[10px] overflow-hidden bg-white">
+                  <span className="bg-[#FFEDDF] px-3 py-2 sm:py-0 h-auto sm:h-12 flex items-center font-bold text-black text-[12px] border-b sm:border-b-0 sm:border-r border-[#0000004D] shrink-0 whitespace-nowrap">
                     Duration{" "}
                     <span className="text-[10px] text-black/40 ml-1">
                       (min)
@@ -401,7 +401,7 @@ export default function QuizDetails() {
                     onChange={(e) =>
                       setEditData({ ...editData, duration: e.target.value })
                     }
-                    className="flex-1 px-3 h-full border-none outline-none text-black dark:text-gray-200 font-bold text-sm bg-transparent cursor-pointer"
+                    className="flex-1 px-3 h-10 sm:h-full border-none outline-none text-black dark:text-gray-200 font-bold text-sm bg-transparent cursor-pointer"
                   >
                     <option value="" disabled>
                       Select
@@ -414,8 +414,8 @@ export default function QuizDetails() {
                   </select>
                 </div>
 
-                <div className="flex items-center border border-[#0000004D] rounded-[10px] overflow-hidden h-12 bg-white">
-                  <span className="bg-[#FFEDDF] px-3 h-full flex items-center font-bold text-black text-[12px] border-r border-[#0000004D] shrink-0 whitespace-nowrap">
+                <div className="flex flex-col sm:flex-row sm:items-stretch border border-[#0000004D] rounded-[10px] overflow-hidden bg-white">
+                  <span className="bg-[#FFEDDF] px-3 py-2 sm:py-0 h-auto sm:h-12 flex items-center font-bold text-black text-[12px] border-b sm:border-b-0 sm:border-r border-[#0000004D] shrink-0 whitespace-nowrap">
                     Score / Q
                   </span>
                   <select
@@ -426,7 +426,7 @@ export default function QuizDetails() {
                         score_per_question: e.target.value,
                       })
                     }
-                    className="flex-1 px-3 h-full border-none outline-none text-black dark:text-gray-200 font-bold text-sm bg-transparent cursor-pointer"
+                    className="flex-1 px-3 h-10 sm:h-full border-none outline-none text-black dark:text-gray-200 font-bold text-sm bg-transparent cursor-pointer"
                   >
                     <option value="" disabled>
                       Select

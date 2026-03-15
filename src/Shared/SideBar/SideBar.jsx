@@ -105,13 +105,13 @@ const NAV_LINKS = [
 
 export default function SideBar() {
   const { loginData } = useContext(AuthContext);
+  const { setOpenMobile, isMobile } = useSidebar();
 
   const filteredLinks = NAV_LINKS.filter((link) =>
     link.roles.includes(loginData?.role),
   );
   return (
-    <SidebarProvider className="w-fit">
-      <Sidebar
+    <Sidebar
         className="border-r border-black/20 dark:border-gray-700  bg-white dark:bg-gray-800 "
         collapsible="icon"
       >
@@ -133,11 +133,14 @@ export default function SideBar() {
                   <NavLink
                     to={link.path}
                     end={link.exact}
+                    onClick={() => {
+                      if (isMobile) setOpenMobile(false);
+                    }}
                     className={({ isActive }) =>
                       `flex items-center gap-5 py-5 transition-all duration-300 relative font-bold  ${
                         isActive
-                          ? "bg-gray-100 text-[#000000]  w-full z-20 group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:rounded-none group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center pl-8 group-data-[collapsible=icon]:pl-0 border-r-4 border-black border-l-0"
-                          : "text-[#000000] dark:text-white hover:bg-gray-50 dark:hover:text-gray-700 pl-8 group-data-[collapsible=icon]:pl-0 w-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-r-4 border-transparent"
+                          ? "bg-gray-100 dark:bg-gray-800 text-black dark:text-white  w-full z-20 group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:rounded-none group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center pl-8 group-data-[collapsible=icon]:pl-0 border-r-4 border-black dark:border-white border-l-0"
+                          : "text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 pl-8 group-data-[collapsible=icon]:pl-0 w-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-r-4 border-transparent"
                       }`
                     }
                   >
@@ -146,8 +149,8 @@ export default function SideBar() {
                         <div
                           className={`flex items-center justify-center w-12 h-12 rounded-[10px] shrink-0 transition-colors group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 ${
                             isActive
-                              ? "bg-[#0D1321] text-[#FFEDDF]"
-                              : "bg-[#FFEDDF] text-[#0D1321]"
+                              ? "bg-black dark:bg-[#FFEDDF] text-[#FFEDDF] dark:text-black"
+                              : "bg-[#FFEDDF] dark:bg-gray-700 text-[#0D1321] dark:text-[#FFEDDF]"
                           }`}
                         >
                           <link.icon className="w-6 h-6 group-data-[collapsible=icon]:w-5 group-data-[collapsible=icon]:h-5" />
@@ -164,6 +167,5 @@ export default function SideBar() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-    </SidebarProvider>
   );
 }

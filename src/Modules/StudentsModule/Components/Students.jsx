@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import DeleteConfirmation from "@/Shared/DeleteConfirmation/DeleteConfirmation";
+import Pagination from "@/Shared/Pagination/Pagination";
 import useStudents from "@/Hooks/useStudent";
 
 import img from "../../../assets/StudentImg.jpg";
@@ -164,134 +165,130 @@ export default function Students() {
           <Loading />
         )}
       </DialogDetails>
-      <div className=" mx-auto    dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
-        {loading ? (
-          <Loading height={"h-screen"} />
-        ) : (
-          <div className="mx-auto my-5 border  p-4 border-gray-200 rounded-md dark:border-gray-500">
-            <h2 className="text-xl font-medium text-black dark:text-gray-100">
+      <div className="py-6 w-full bg-white dark:bg-[#0D1321] min-h-screen">
+        <div className="border border-black/20 dark:border-gray-800 rounded-[10px] shadow-sm overflow-hidden">
+
+          {/* Header Section */}
+          <div className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#111827] border-b border-black/20 dark:border-gray-800 gap-4">
+            <h2 className="text-xl font-bold text-black dark:text-gray-100">
               Student List
             </h2>
-            <div className="flex gap-x-4 my-4 flex-wrap">
+
+            <div className="relative w-full sm:w-1/3">
               <Input
-                className=" md:w-1/3 py-6 w-full dark:bg-gray-700 dark:text-white placeholder:text-black dark:placeholder:text-white"
+                className="w-full pl-4 rounded-[30px] border border-black/20 dark:border-gray-800 bg-white dark:bg-[#1A1D23] placeholder:text-gray-400 text-black dark:text-white shadow-sm h-11 focus-visible:ring-0"
                 placeholder="Search By Name"
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-              />{" "}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-              {currentStudents.map((student, index) => (
-                <Card
-                  key={student._id}
-                  id={`student-${student._id}`}
-                  className="w-full py-0 rounded pr-5 h-26 bg-white dark:bg-gray-800"
-                >
-                  <div className="flex items-center justify-between h-full overflow-hidden">
-                    <div className="flex items-center gap-4 h-full">
-                      <img
-                        src={studentImages[index % studentImages.length]}
-                        alt="avatar"
-                        className="h-full aspect-square object-cover"
-                      />
-
-                      <div className="flex flex-col justify-center gap-y-1 ">
-                        <CardTitle className="dark:text-white text-sm">
-                          {student.first_name} {student.last_name}
-                        </CardTitle>
-                        <CardDescription className="">
-                          <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                            <span className="font-medium text-gray-400 dark:text-gray-500 text-sm">
-                              Group:
-                            </span>
-                            <span className="font-semibold text-gray-500 dark:text-gray-300 text-sm">
-                              {student.group ? student.group.name : "No Group"}
-                            </span>
-                          </div>
-                          <div
-                            className={`flex items-center my-1  font-medium w-fit  py-0
-  ${student.status === "active" ? " text-green-600" : " text-red-600"}`}
-                          >
-                            {student.status === "active" ? (
-                              <>
-                                <p className="text-base">Active</p>
-
-                                <Check className="mx-2" size={18} />
-                              </>
-                            ) : (
-                              <>
-                                inactive
-                                <CircleX size={18} />
-                              </>
-                            )}
-                          </div>
-                        </CardDescription>
-                      </div>
-                    </div>
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button className="rounded-full w-8 h-8 bg-black text-white dark:bg-gray-700 dark:text-white self-center">
-                          <ArrowRight size={18} />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-48 bg-white dark:bg-gray-800 shadow-lg border border-gray-100 dark:border-gray-700 rounded-xl p-1">
-                        <DropdownMenuLabel className="text-xs text-gray-400 font-medium px-2">
-                          Actions
-                        </DropdownMenuLabel>
-                        <DropdownMenuSeparator className="bg-gray-100" />
-                        <DropdownMenuGroup>
-                          <DropdownMenuItem
-                            onClick={() => handleViewProfile(student._id)}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200"
-                          >
-                            <Eye className="w-4 h-4 text-gray-500" />
-                            View Profile
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator className="bg-gray-100" />
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-900 text-sm font-medium text-red-500"
-                            onClick={() => {
-                              setStudentToDelete(student);
-                              setConfirmOpen(true);
-                            }}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete Student
-                          </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </Card>
-              ))}
-            </div>
-            <div>
-              <Button
-                className="text-xs text-gray-600 dark:text-white"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
-              >
-                Prev
-              </Button>
-
-              <span className="text-gray-600 dark:text-white">
-                {currentPage} / {totalPages}
-              </span>
-
-              <Button
-                className="text-xs text-gray-600 dark:text-white"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
-              >
-                Next
-              </Button>
+              />
             </div>
           </div>
-        )}
+
+          {/* Cards Content */}
+          <div className="px-4 sm:px-6 py-6 bg-white dark:bg-[#111827]">
+            {loading ? (
+              <Loading height={"h-screen"} />
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {currentStudents.map((student, index) => (
+                    <Card
+                      key={student._id}
+                      id={`student-${student._id}`}
+                      className="w-full py-0 rounded pr-4 sm:pr-5 h-auto sm:h-26 bg-white dark:bg-[#1A1D23] border border-black/10 dark:border-gray-800 overflow-hidden"
+                    >
+                      <div className="flex items-center justify-between h-full overflow-hidden">
+                        <div className="flex items-center gap-3 sm:gap-4 h-full">
+                          <img
+                            src={studentImages[index % studentImages.length]}
+                            alt="avatar"
+                            className="h-24 sm:h-full aspect-square object-cover shrink-0"
+                          />
+
+                          <div className="flex flex-col justify-center gap-y-1">
+                            <CardTitle className="dark:text-white text-sm">
+                              {student.first_name} {student.last_name}
+                            </CardTitle>
+                            <CardDescription>
+                              <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                                <span className="font-medium text-gray-400 dark:text-gray-500 text-sm">
+                                  Group:
+                                </span>
+                                <span className="font-semibold text-gray-500 dark:text-gray-300 text-sm">
+                                  {student.group ? student.group.name : "No Group"}
+                                </span>
+                              </div>
+                              <div
+                                className={`flex items-center my-1 font-medium w-fit py-0
+  ${student.status === "active" ? " text-green-600" : " text-red-600"}`}
+                              >
+                                {student.status === "active" ? (
+                                  <>
+                                    <p className="text-base">Active</p>
+                                    <Check className="mx-2" size={18} />
+                                  </>
+                                ) : (
+                                  <>
+                                    inactive
+                                    <CircleX size={18} />
+                                  </>
+                                )}
+                              </div>
+                            </CardDescription>
+                          </div>
+                        </div>
+
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button className="rounded-full w-8 h-8 bg-black text-white dark:bg-gray-700 dark:text-white self-center">
+                              <ArrowRight size={18} />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="w-48 bg-white dark:bg-gray-800 shadow-lg border border-gray-100 dark:border-gray-700 rounded-xl p-1">
+                            <DropdownMenuLabel className="text-xs text-gray-400 font-medium px-2">
+                              Actions
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator className="bg-gray-100" />
+                            <DropdownMenuGroup>
+                              <DropdownMenuItem
+                                onClick={() => handleViewProfile(student._id)}
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200"
+                              >
+                                <Eye className="w-4 h-4 text-gray-500" />
+                                View Profile
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator className="bg-gray-100" />
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-900 text-sm font-medium text-red-500"
+                                onClick={() => {
+                                  setStudentToDelete(student);
+                                  setConfirmOpen(true);
+                                }}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                Delete Student
+                              </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </>
+            )}
+          </div>
+
+        </div>
       </div>
     </>
   );
