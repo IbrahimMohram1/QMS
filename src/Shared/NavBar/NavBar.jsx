@@ -1,5 +1,12 @@
 import React, { useContext } from "react";
-import { ChevronDown, AlarmClockPlus, Mail, Bell, LogOut, Menu } from "lucide-react";
+import {
+  ChevronDown,
+  AlarmClockPlus,
+  Mail,
+  Bell,
+  LogOut,
+  Menu,
+} from "lucide-react";
 import { NavLink, useLocation, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -17,6 +24,7 @@ import {
 
 import { ThemeContext } from "@/Context/DarkModeContext";
 import ToggleTheme from "../ToggleTheme/ToggleTheme";
+import { LangSwitcher } from "../LangSwitcher/LangSwitcher";
 
 export default function NavBar() {
   const { userProfile } = useContext(AuthContext);
@@ -45,7 +53,7 @@ export default function NavBar() {
     <header className="flex py-3 items-center justify-between bg-white dark:bg-[#0D1321] px-4 md:px-8 border-b border-black/10 dark:border-gray-800">
       {/* Page Title & Mobile Toggle */}
       <div className="flex items-center gap-2">
-        <button 
+        <button
           onClick={toggleSidebar}
           className="md:hidden p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
         >
@@ -62,6 +70,7 @@ export default function NavBar() {
         <div className="px-2 md:px-4">
           <ToggleTheme />
         </div>
+        <LangSwitcher />
 
         {/* New Quiz */}
         <div className="px-2 md:px-6 flex items-center h-full border-l border-black/10 dark:border-gray-600">

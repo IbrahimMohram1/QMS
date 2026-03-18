@@ -1,0 +1,10 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "groups": "Groups",
+    "quizzes": "Quizzes",
+    "students": "Students",
+    "questions": "Questions",
+    "results": "Results"
+  }
+}

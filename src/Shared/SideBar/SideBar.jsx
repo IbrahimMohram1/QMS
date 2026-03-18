@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  SidebarProvider,
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarMenu,
   SidebarMenuItem,
@@ -19,12 +17,12 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { AuthContext } from "@/Context/AuthContext";
+import { useTranslation } from "react-i18next";
 
-// Pixel-perfect Logo from Figma
+// Logo Component
 const Logo = () => (
   <div className="flex items-center group-data-[collapsible=icon]:justify-center">
     <div className="relative flex items-center justify-center">
-      {/* The double circle / X logo style */}
       <div className="w-10 h-10 border-[3px] border-black dark:border-gray-300 rounded-full flex items-center justify-center bg-white dark:bg-gray-900 font-extrabold text-lg z-10 translate-x-1 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:border-[3px]">
         <span className="text-black dark:text-white">X</span>
       </div>
@@ -47,12 +45,9 @@ const Logo = () => (
   </div>
 );
 
+// Sidebar trigger button
 export function CustomSidebarTrigger() {
   const { toggleSidebar } = useSidebar();
-  let { loginData } = useContext(AuthContext);
-  useEffect(() => {
-    console.log(loginData);
-  }, [loginData]);
   return (
     <button
       onClick={toggleSidebar}
@@ -63,40 +58,41 @@ export function CustomSidebarTrigger() {
   );
 }
 
+// Nav links with translation keys
 const NAV_LINKS = [
   {
-    name: "Dashboard",
+    name: "sidebar.dashboard",
     path: "/dashboard",
     exact: true,
     icon: LayoutDashboard,
     roles: ["Instructor", "Student"],
   },
   {
-    name: "Groups",
+    name: "sidebar.groups",
     path: "/dashboard/groups",
     icon: Users,
     roles: ["Instructor"],
   },
   {
-    name: "Quizzes",
+    name: "sidebar.quizzes",
     path: "/dashboard/quizes",
     icon: AlarmClock,
     roles: ["Instructor", "Student"],
   },
   {
-    name: "Students",
+    name: "sidebar.students",
     path: "/dashboard/students",
     icon: Users,
     roles: ["Instructor"],
   },
   {
-    name: "Questions",
+    name: "sidebar.questions",
     path: "/dashboard/questions",
     icon: FileText,
     roles: ["Instructor"],
   },
   {
-    name: "Results",
+    name: "sidebar.results",
     path: "/dashboard/results",
     icon: FileText,
     roles: ["Instructor", "Student"],
@@ -106,66 +102,71 @@ const NAV_LINKS = [
 export default function SideBar() {
   const { loginData } = useContext(AuthContext);
   const { setOpenMobile, isMobile } = useSidebar();
+  const { t, i18n } = useTranslation();
 
   const filteredLinks = NAV_LINKS.filter((link) =>
     link.roles.includes(loginData?.role),
   );
+
+  // Determine Sidebar direction
+  const isRTL = i18n.language === "ar";
+
   return (
     <Sidebar
-        className="border-r border-black/20 dark:border-gray-700  bg-white dark:bg-gray-800 "
-        collapsible="icon"
-      >
-        <SidebarHeader className="flex flex-row items-center  px-8 my-3  group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:flex-col dark:text-gray-100">
-          <CustomSidebarTrigger />
-          <div className="group-data-[collapsible=icon]:mt-2 pr-2 group-data-[collapsible=icon]:pr-0">
-            <Logo />
-          </div>
-        </SidebarHeader>
+      collapsible="icon"
+      className={`fixed top-0 ${isRTL ? "right-0 border-l" : "left-0 border-r"} border-black/20 dark:border-gray-700 bg-white dark:bg-gray-800 h-full z-50 transition-all`}
+    >
+      <SidebarHeader className="flex flex-row items-center px-8 my-3 group-data-[collapsible=icon]:p-4 group-data-[collapsible=icon]:flex-col dark:text-gray-100">
+        <CustomSidebarTrigger />
+        <div className="group-data-[collapsible=icon]:mt-2 pr-2 group-data-[collapsible=icon]:pr-0">
+          <Logo />
+        </div>
+      </SidebarHeader>
 
-        <SidebarContent className="p-0 overflow-visible">
-          <SidebarGroup className="p-0">
-            <SidebarMenu className="gap-0 ">
-              {filteredLinks.map((link) => (
-                <SidebarMenuItem
-                  key={link.name}
-                  className="px-0 relative border-b border-black/20 dark:border-gray-700 "
+      <SidebarContent className="p-0 overflow-visible">
+        <SidebarGroup className="p-0">
+          <SidebarMenu className="gap-0">
+            {filteredLinks.map((link) => (
+              <SidebarMenuItem
+                key={link.name}
+                className="px-0 relative border-b border-black/20 dark:border-gray-700"
+              >
+                <NavLink
+                  to={link.path}
+                  end={link.exact}
+                  onClick={() => {
+                    if (isMobile) setOpenMobile(false);
+                  }}
+                  className={({ isActive }) =>
+                    `flex items-center gap-5 py-5 transition-all duration-300 relative font-bold ${
+                      isActive
+                        ? `${isRTL ? "border-l-4 " : "border-r-4"} border-black dark:border-white bg-gray-100 dark:bg-gray-800 text-black dark:text-white w-full z-20 group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:rounded-none group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center pl-8 group-data-[collapsible=icon]:pl-0`
+                        : `text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 pl-8 group-data-[collapsible=icon]:pl-0 w-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-transparent`
+                    }`
+                  }
                 >
-                  <NavLink
-                    to={link.path}
-                    end={link.exact}
-                    onClick={() => {
-                      if (isMobile) setOpenMobile(false);
-                    }}
-                    className={({ isActive }) =>
-                      `flex items-center gap-5 py-5 transition-all duration-300 relative font-bold  ${
-                        isActive
-                          ? "bg-gray-100 dark:bg-gray-800 text-black dark:text-white  w-full z-20 group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:rounded-none group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center pl-8 group-data-[collapsible=icon]:pl-0 border-r-4 border-black dark:border-white border-l-0"
-                          : "text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 pl-8 group-data-[collapsible=icon]:pl-0 w-full group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center border-r-4 border-transparent"
-                      }`
-                    }
-                  >
-                    {({ isActive }) => (
-                      <>
-                        <div
-                          className={`flex items-center justify-center w-12 h-12 rounded-[10px] shrink-0 transition-colors group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 ${
-                            isActive
-                              ? "bg-black dark:bg-[#FFEDDF] text-[#FFEDDF] dark:text-black"
-                              : "bg-[#FFEDDF] dark:bg-gray-700 text-[#0D1321] dark:text-[#FFEDDF]"
-                          }`}
-                        >
-                          <link.icon className="w-6 h-6 group-data-[collapsible=icon]:w-5 group-data-[collapsible=icon]:h-5" />
-                        </div>
-                        <span className=" tracking-tight group-data-[collapsible=icon]:hidden whitespace-nowrap">
-                          {link.name}
-                        </span>
-                      </>
-                    )}
-                  </NavLink>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
+                  {({ isActive }) => (
+                    <>
+                      <div
+                        className={`flex items-center justify-center w-12 h-12 rounded-[10px] shrink-0 transition-colors group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 ${
+                          isActive
+                            ? "bg-black mr-5 dark:bg-[#FFEDDF] text-[#FFEDDF] dark:text-black"
+                            : "bg-[#FFEDDF] mr-5 dark:bg-gray-700 text-[#0D1321] dark:text-[#FFEDDF]"
+                        }`}
+                      >
+                        <link.icon className="w-6 h-6 group-data-[collapsible=icon]:w-5 group-data-[collapsible=icon]:h-5" />
+                      </div>
+                      <span className="tracking-tight group-data-[collapsible=icon]:hidden whitespace-nowrap">
+                        {t(link.name)}
+                      </span>
+                    </>
+                  )}
+                </NavLink>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 }

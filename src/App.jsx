@@ -24,8 +24,19 @@ import QuizDetails from "./Modules/QuizesModule/Components/QuizDetails";
 import ResultView from "./Modules/ResultsModule/Components/Result-view/ResultView";
 import StudentQuiz from "./Modules/QuizesModule/Components/StudentQuiz";
 import { ThemeContextProvider } from "./Context/DarkModeContext";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    if (i18n.language === "ar") {
+      document.documentElement.dir = "rtl";
+    } else {
+      document.documentElement.dir = "ltr";
+    }
+  }, [i18n.language]);
   let routes = createBrowserRouter([
     {
       path: "/",

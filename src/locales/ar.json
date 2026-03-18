@@ -1,0 +1,10 @@
+{
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "groups": "المجموعات",
+    "quizzes": "الاختبارات",
+    "students": "الطلاب",
+    "questions": "الأسئلة",
+    "results": "النتائج"
+  }
+}
